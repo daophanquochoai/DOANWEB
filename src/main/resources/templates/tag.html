@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Tag Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/tag.css}">
+<!--    <link rel="stylesheet" href="../static/css/reset.css" />-->
+    <!-- <link rel="stylesheet" href="../static/css/home.css" /> -->
+<!--    <link rel="stylesheet" href="../static/css/tag.css">-->
+
+    <link rel="shortcut icon" type="image/png" th:href="${image.getShortCutIcon()}" />
+</head>
+
+<body>
+    <header
+        class="d-flex align-items-center justify-content-between w-100"
+>
+    <span class="d-none array_follow" th:data-array-follow="${baiDangJson}"></span>
+    <span class="d-none info_id" th:text="${info.getId()}"></span>
+
+    <div class="header_logo">
+        <a th:href="@{/home}"
+        ><img
+                th:src="${image.getImage()}"
+        /></a>
+    </div>
+    <div
+            class="header_search d-flex justify-content-center align-items-center"
+    >
+        <p>Products</p>
+        <div class="header_search_input w-100">
+            <!-- <div>icon</div> -->
+            <input />
+        </div>
+    </div>
+    <div class="header_info d-flex align-items-center">
+        <div class="box_notice">
+            <div class="position-relative header_info_notice">
+                <img style="width: 100%;"
+                     src="https://cdn.icon-icons.com/icons2/2070/PNG/512/box_icon_126495.png"
+                />
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notice_number" th:text="${noticeNotSeen}">
+                                </span>
+            </div>
+            <ul class="notice_list">
+                <th:block th:each=" n : ${notice}">
+                    <a th:href="@{'question/' + ${n.getThongbao().getBaidang().getId()}}" >
+                        <div class="notice_item" th:style="${n.getStatus() == true ? 'background-color:white;' : 'background-color:#d9d4d4;'}">
+                            <li th:text="${n.thongbao.noidung}"></li>
+                            <span th:text="${n.thongbao.thoigiantao}"></span>
+                        </div>
+                    </a>
+                </th:block>
+            </ul>
+        </div>
+        <div class="header_info_image">
+            <a th:href="${'/user/' + info.id}"><img th:src="${info.getAnhDaiDien()}" alt="Avatar"></a>
+            <!--                        <img th:unless="${#strings.startsWith(info.getAnhDaiDien(), 'http')}" th:src="@{/images/{imageName}(imageName=${info.getAnhDaiDien()})}" alt="Avatar">-->
+        </div>
+    </div>
+</header>
+    <section class="section_body d-flex">
+        <nav class="navbar_list">
+            <a th:href="@{/home}" class="navbar_items no_action">
+                <p>Home</p>
+            </a>
+            <a th:href="@{/question}" class="navbar_items no_action">
+                <p>Question</p>
+            </a>
+            <div class="navbar_items action">
+                <p>Tag</p>
+            </div>
+            <a th:href="@{/saved}" class="navbar_items no_action">
+                <p>Saved</p>
+            </a>
+            <a th:href="@{/users}" class="navbar_items no_action">
+                <p>Users</p>
+            </a>
+        </nav>
+        <div class="section_body_main d-flex">
+            <div class="section_body_left">
+                <div class="section_body_top">
+                    <div class="body-top_text">
+                        <p class="text-title">Tags</p>
+                        <p class="text-content">
+                            A tag is a keyword or label that categorizes your question with other, similar questions.
+                            Using the right tags makes it easier for others to find and answer your question.
+                        </p>
+                    </div>
+                    <div class="body-top_showAllTags">
+                        <a href="#">Show all tag synonyms</a>
+                    </div>
+                    <div class="body-top_filterAndSearch d-flex">
+                        <div class="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input class="input-search" type="text" placeholder="Filter by tag name">
+                        </div>
+                        <div class="filter">
+                            <a href="#" class="btn-item active">Popular</a>
+                            <a href="#" class="btn-item">New</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_body_bottom">
+                    <!-- row-cols-xl-4 -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 my-4 card-content">
+                        <th:block th:each=" t : ${tags}">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="#" th:text="${t.tenTag}"></a>
+                                        <!--                  chờ question                          -->
+                                        </h5>
+                                        <p class="card-text v-truncate4" th:text="${t.noidung}"></p>
+                                        <div class="card-bottom d-flex jc-space-between text-wrap">
+                                            <p th:text="${t.getBaiDang().size() + ' question'}"></p>
+                                            <p th:text="${t.thoigiantao}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                </div>
+                <div class="section_body_pagenation">
+                    <div class="pagination">
+                    </div>
+                </div>
+            </div>
+            <div class="section_body_right">
+
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--    <script src="../static/js/base.js"> </script>-->
+<!--    <script src="../static/js/home.js"></script>s-->
+<!--    <script src="../static/js/tag.js"></script>-->
+    <script th:src="@{/js/base.js}"></script>
+    <script th:src="@{/js/tag.js}"></script>
+</body>
+
+</html>

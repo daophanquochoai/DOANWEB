@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/tag.css}" />
+    <link rel="stylesheet" th:href="@{css/user.css}">
+<!--    <link rel="stylesheet" href="../static/css/reset.css" />-->
+<!--    <link rel="stylesheet" href="../static/css/user.css">-->
+    <link rel="shortcut icon" type="image/png" th:href="${image.getShortCutIcon()}" />
+</head>
+
+<body>
+    <header
+        class="d-flex align-items-center justify-content-between w-100"
+>
+    <span class="d-none array_follow" th:data-array-follow="${baiDangJson}"></span>
+    <span class="d-none info_id" th:text="${info.getId()}"></span>
+
+    <div class="header_logo">
+        <a th:href="@{/home}"
+        ><img
+                th:src="${image.getImage()}"
+        /></a>
+    </div>
+    <div
+            class="header_search d-flex justify-content-center align-items-center"
+    >
+        <p>Products</p>
+        <div class="header_search_input w-100">
+            <!-- <div>icon</div> -->
+            <input type="text"
+                   onkeypress="handleKeyPress(event, this.value)"
+            />
+
+        </div>
+    </div>
+    <div class="header_info d-flex align-items-center">
+        <div class="box_notice">
+            <div class="position-relative header_info_notice">
+                <img style="width: 100%;"
+                     src="https://cdn.icon-icons.com/icons2/2070/PNG/512/box_icon_126495.png"
+                />
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notice_number" th:text="${noticeNotSeen}">
+                            </span>
+            </div>
+            <ul class="notice_list">
+                <th:block th:each=" n : ${notice}">
+                    <a th:href="@{'question/' + ${n.getThongbao().getBaidang().getId()}}" >
+                        <div class="notice_item" th:style="${n.getStatus() == true ? 'background-color:white;' : 'background-color:#d9d4d4;'}">
+                            <li th:text="${n.thongbao.noidung}"></li>
+                            <span th:text="${n.thongbao.thoigiantao}"></span>
+                        </div>
+                    </a>
+                </th:block>
+            </ul>
+        </div>
+        <div class="header_info_image">
+            <a th:href="${'/user/' + info.id}"><img th:src="${info.getAnhDaiDien()}" alt="Avatar"></a>
+            <!--                        <img th:unless="${#strings.startsWith(info.getAnhDaiDien(), 'http')}" th:src="@{/images/{imageName}(imageName=${info.getAnhDaiDien()})}" alt="Avatar">-->
+        </div>
+    </div>
+</header>
+    <section class="section_body d-flex">
+        <nav class="navbar_list">
+            <a th:href="@{/home}" class="navbar_items no_action">
+                <p>Home</p>
+            </a>
+            <a th:href="@{/question}" class="navbar_items no_action">
+                <p>Question</p>
+            </a>
+            <a th:href="@{/tag}" class="navbar_items no_action">
+                <p>Tag</p>
+            </a>
+            <a th:href="@{/saved}" class="navbar_items no_action">
+                <p>Saved</p>
+            </a>
+            <div class="navbar_items action">
+                <p>Users</p>
+            </div>
+        </nav>
+        <div class="section_body_main d-flex">
+            <div class="section_body_left w-100">
+                <div class="section_body_top">
+                    <div class="body-top_text">
+                        <p class="text-title">User</p>
+                    </div>
+                    <div class="body-top_filterAndSearch d-flex">
+                        <div class="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <th:block th:if="${q == ''}">
+                                <input class="input-search" type="text" placeholder="Filter by user" onkeypress="handleSearchUser(event, this.value)">
+                            </th:block>
+                            <th:block th:unless="${q == ''}">
+                                <input class="input-search" type="text" th:value="${q}" placeholder="Filter by user" onkeypress="handleSearchUser(event, this.value)">
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_body_bottom">
+                    <!-- row-cols-xl-4 -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2 my-4 card-content">
+                        <th:block th:each=" u : ${users}">
+                            <div class="col">
+                                <div class="card h-100 items">
+                                    <div class="card-image">
+                                        <a th:href="@{'/user/' + ${u.id}}">
+                                            <img th:src="${u.anhDaiDien}"
+                                                 class="card-img-top" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="card-body" style="height: 200px; overflow: hidden">
+                                        <a th:href="@{'/user/' + ${u.id}}">
+                                            <p class="card-name" th:text="${(u.ho != null ? u.ho : '') + ' ' +( u.ten != null ? u.ten : '')}"></p>
+                                        </a>
+                                        <p class="card-address" th:text="${u.email}"></p>
+                                        <p class="card-post" th:text="${u.truong}"></p>
+                                        <p class="card-intro" th:text="${u.gioiThieu}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <!--          pagination              -->
+                    <th:block th:if="${pagination.getTotal() > 0 && pagination.getTotal() <= 4}">
+                        <div class="section_body_pagenation">
+                            <nav aria-label="...">
+                                <ul class="pagination pagination-sm">
+                                    <th:block th:each="p : ${#numbers.sequence(1, pagination.getTotal())}">
+                                        <li th:class="${p == pagination.getCurrentPage() ? 'page-item active' : 'page-item'}">
+                                            <th:block th:if="${p == pagination.getCurrentPage()}">
+                                                <span class="page-link" th:text="${p}"></span>
+                                            </th:block>
+                                            <th:block th:unless="${p == pagination.getCurrentPage()}">
+                                                <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + p)
+                                                                :
+                                                                '?' + request.queryString + '&page=' + p)
+                                                             :
+                                                            '?page=' + p}}" th:text="${p}"></a>
+                                            </th:block>
+                                        </li>
+                                    </th:block>
+                                </ul>
+                            </nav>
+                        </div>
+                    </th:block>
+                    <!--       panigation         -->
+                    <th:block th:if="${pagination.getTotal() > 4}">
+                        <div class="section_body_pagenation">
+                            <nav aria-label="...">
+                                <ul class="pagination pagination-sm">
+                                    <th:block th:if="${pagination.getCurrentPage() == 1}">
+                                        <th:block th:each="p : ${#numbers.sequence(1, 3)}">
+                                            <li th:class="${p == pagination.getCurrentPage() ? 'page-item active' : 'page-item'}">
+                                                <th:block th:if="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:text="${p}"></a>
+                                                </th:block>
+                                                <th:block th:unless="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + p)
+                                                                :
+                                                                '?' + request.queryString + '&page=' + p)
+                                                             :
+                                                            '?page=' + p}}" th:text="${p}"></a>
+                                                </th:block>
+                                            </li>
+                                        </th:block>
+                                        <li><span class="page-link">...</span></li>
+                                        <li class="page-item">
+                                            <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + pagination.getTotal())
+                                                                :
+                                                                '?' + request.queryString + '&page=' + pagination.getTotal())
+                                                             :
+                                                            '?page=' + p}}" th:text="${pagination.getTotal()}"></a>
+                                        </li>
+                                    </th:block>
+                                    <th:block th:if="${pagination.getCurrentPage() == pagination.getTotal() && pagination.getCurrentPage() != 1}">
+                                        <th:block th:each="p : ${#numbers.sequence(pagination.getCurrentPage()-2, pagination.getCurrentPage())}">
+                                            <li th:class="${p == pagination.getCurrentPage() ? 'page-item active' : 'page-item'}">
+                                                <th:block th:if="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:text="${p}"></a>
+                                                </th:block>
+                                                <th:block th:unless="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + p)
+                                                                :
+                                                                '?' + request.queryString + '&page=' + p)
+                                                             :
+                                                            '?page=' + p}}" th:text="${p}"></a>
+                                                </th:block>
+                                            </li>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:if="${pagination.getCurrentPage() > 1 && pagination.getCurrentPage() < pagination.getTotal()}">
+                                        <th:block th:each="p : ${#numbers.sequence(pagination.getCurrentPage()-1, pagination.getCurrentPage()+1)}">
+                                            <li th:class="${p == pagination.getCurrentPage() ? 'page-item active' : 'page-item'}">
+                                                <th:block th:if="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:text="${p}"></a>
+                                                </th:block>
+                                                <th:block th:unless="${p == pagination.getCurrentPage()}">
+                                                    <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + p)
+                                                                :
+                                                                '?' + request.queryString + '&page=' + p)
+                                                             :
+                                                            '?page=' + p}}" th:text="${p}"></a>
+                                                </th:block>
+                                            </li>
+                                        </th:block>
+                                        <th:block th:if="${pagination.getCurrentPage() + 1 < pagination.getTotal()}">
+                                            <li><a class="page-link">...</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" th:href="@{${request.requestURI} + ${request.queryString != null ?
+                                                             ( request.queryString.contains('page') ?
+                                                                '?' + request.queryString.replace('page='+ pagination.getCurrentPage(), 'page=' + pagination.getTotal())
+                                                                :
+                                                                '?' + request.queryString + '&page=' + pagination.getTotal())
+                                                             :
+                                                            '?page=' + p}}" th:text="${pagination.getTotal()}"></a>
+                                            </li>
+                                        </th:block>
+                                    </th:block>
+                                </ul>
+                            </nav>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script th:src="@{/js/base.js}"> </script>
+    <script th:src="@{/js/user.js}"></script>
+<!--    <script src="../static/js/base.js"> </script>-->
+<!--    <script src="../static/js/user.js"></script>-->
+</body>
+
+</html>

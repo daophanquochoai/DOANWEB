@@ -1,0 +1,16 @@
+.section_xac_nhan{
+    background-color: rgb(178, 200, 200);
+    height: 100vh;
+}
+.section_xac_nhan .section_animation{
+    padding: 40px;
+    background-color: white;
+}
+
+.section_xac_nhan .section_animation input{
+    height: 100px;
+    width: 56px;
+    padding: 5px;
+    font-size: 77px;
+}
+

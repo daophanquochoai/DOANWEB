@@ -1,0 +1,237 @@
+:root{
+  --background-action : rgb(255, 240, 219);
+  --background--hover : rgb(241,242,243);
+}
+
+
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif;
+}
+
+::selection {
+  background: #7f7f7f;
+  color: #555;
+}
+
+::-moz-selection {
+  background: #7f7f7f;
+  color: #555;
+}
+::-webkit-selection {
+  background: #7f7f7f;
+  color: #555;
+}
+html{
+  font-size: 16px;
+}
+h1, h2, h3 {
+  padding: 0;
+  margin: 0;
+}
+
+a{
+  text-decoration: none;
+  color: rgb(37,40,43);
+}
+a:hover{
+  color: rgb(37,40,43);
+}
+ul{
+  padding: 0;
+}
+li{
+  list-style-type: none;
+}
+/*# sourceMappingURL=reset.css.map */
+
+
+/* setup header, navbar */
+header{
+  padding: 8px 50px;
+  position: fixed;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+  top: 0;
+  background-color: white;
+  z-index: 9;
+}
+
+header .header_logo img{
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+
+header .header_search{
+  width: 60%;
+}
+header .header_search p{
+  margin-bottom: 0;
+  margin-right: 20px;
+}
+header .header_search input{
+  width: 80%;
+  font-size: 18px;
+  border-radius: 10px;
+  border-color: rgb(241,242,243);
+  padding: 0 5px;
+}
+header .header_search input:focus {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 219, 0.5);
+}
+header .header_info .header_info_notice{
+  margin-right: 30px;
+  cursor: pointer;
+  /* width: 40px;
+  height: 40px; */
+}
+header .header_info .header_info_notice img{
+  width: 30px;
+  height: 30px;
+}
+header .header_info .header_info_image{
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+}
+header .header_info .header_info_image img{
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  object-fit: cover;
+}
+
+/* body */
+.section_body{
+  margin-top: 58px;
+}
+.section_body .navbar_list{
+  width: 20%;
+  height: calc(100vh - 70px);
+}
+.section_body .section_body_main{
+  width: 80%;
+  height: calc(100vh - 70px);
+}
+.section_body .section_body_main .section_body_left{
+  width: 70%;
+  height: calc(100vh - 58px);
+}
+.section_body .section_body_main .section_body_right{
+  width: 30%;
+  height: calc(100vh - 58px);
+}
+
+/* navbar */
+.navbar_list{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-top: 20px;
+}
+.navbar_list .navbar_items{
+  margin: 10px;
+  height: 30px;
+  margin-left: 50px;
+  width: 60%;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px 0 0 20px; 
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navbar_list .navbar_items.action{
+  background-color: rgb(241,242,243);
+}
+.navbar_list .navbar_items.no_action:hover{
+  background-color: rgb(255, 240, 219);
+}
+.navbar_list .navbar_items p{
+  margin: 0;
+}
+
+
+/* style bang css */
+.image_add{
+  width: 70px;
+  height: 50px;
+  padding: 4px;
+}
+.image_upload{
+  position: relative;
+}
+.image_upload i{
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+/* add tag or use tag */
+.modal-dialog .form-floating .add_tag{
+  display: none;
+}
+
+
+
+/* preloading */
+.button_loading{
+  display: none;
+}
+
+/* footer */
+footer{
+  background-color: black;
+  padding: 20px 40px;
+}
+footer .footer-title{
+  color: aqua;
+  font-size: 1.5rem;
+}
+footer .footer-text{
+  color: white;
+  font-size: 16px;
+}
+
+
+/* notice list */
+.header_info .box_notice{
+  position: relative;
+}
+.header_info .notice_list{
+  background-color: rgb(13, 202, 240);
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  top: 45px;
+  right: 20px;
+  width: 300px;
+  /*height: 400px;*/
+  min-height: 100px;
+  max-height: 400px;
+   display: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* display: none; */
+}
+.header_info .notice_list .notice_item{
+  background-color: white;
+  padding: 10px;
+  list-style-type: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #5a5a5a;
+}
+.header_info .notice_list .notice_item .notice_item_date{
+  font-size: 10px;
+  font-weight: 500;
+  color: #0dcaf0;
+}

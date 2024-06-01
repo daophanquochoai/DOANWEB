@@ -1,0 +1,31 @@
+.section_xac_nhan{
+    background-color: rgb(178, 200, 200);
+    height: 100vh;
+}
+.section_xac_nhan .section_animation{
+    padding: 40px;
+    background-color: white;
+}
+.section_xac_nhan .section_animation label{
+    font-size: 1rem;
+    font-weight: 700;
+}
+.section_xac_nhan .section_animation input{
+    font-size: 1.2rem;
+    width: 80%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+.section_xac_nhan .section_animation .animation_box{
+    position: relative;
+}
+.section_xac_nhan .section_animation i{
+    position: absolute;
+    top: calc(1.2rem / 2);
+    right: -4px;
+    cursor: pointer;
+}
+.section_xac_nhan .section_animation .button-submit{
+    display: none;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forget Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/xacNhan.css}" />
+<!--       <link href="../static/css/reset.css" rel="stylesheet">-->
+<!--       <link href="../static/css/xacNhan.css" rel="stylesheet">-->
+</head>
+<body>
+
+<section class="container-fluid section_xac_nhan d-flex justify-content-center align-items-center">
+        <form th:action="@{'/xuli/maxacnhan/' + ${id}}" method="POST" class="section_animation d-flex flex-column justify-content-center align-items-center">
+            <div class="mb-3">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+                <input name="maxacnhan" type="text" maxlength="1" oninput="limitToOneCharacterAndMoveCaret()">
+            </div>
+            <span class="mb-3"> còn <span style="font-weight: 800;" class="text_count">60</span> giây</span>
+            <button class="btn btn-info mb-2" style="color: white;">Xác nhận</button>
+            <a class="gui_lai" href="javascript:void(0);" onclick="submitForm()">Gửi lại</a>
+        </form>
+
+        <form id="hiddenForm" th:action="@{/xuli/email}" method="post" style="display: none">
+            <input type="hidden" name="emailReceiver" th:value="${emailReceiver}" />
+        </form>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!--<script src="../static/js/base.js"></script>-->
+<!--<script src="../static/js/xacNhan.js"></script>-->
+<script th:src="@{/js/base.js}"></script>
+<script th:src="@{/js/xacNhan.js}"></script>
+</body>
+</html>

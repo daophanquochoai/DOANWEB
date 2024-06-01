@@ -1,0 +1,100 @@
+.section_login{
+    background-color: rgb(178, 200, 200);
+    height: 100vh;
+}
+.section_login .section_login_container{
+    background-color: white;
+    width: 30%;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.section_login .section_login_avt{
+    width: 100px;
+    height: 100px;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/d/d7/Logo_PTIT.jpg);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+.section_login .section_login_box{
+    margin-top: 20px;
+    width: 100%;
+}
+.section_login .section_login_box label{
+    color: rgb(169, 167, 167);
+    margin-bottom: 5px;
+}
+.section_login .section_login_box input{
+    color: rgb(169, 167, 167);
+    font-size: 18px; 
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 2px rgb(169, 167, 167) solid;
+}
+.section_login .section_login_box_bottom{
+    margin-bottom: 40px;
+}
+.section_login .section_login_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.section_login .section_login_accept{
+    width: 50%;
+    border: none;
+    padding: 8px;
+    margin-bottom: 20px;
+}
+.section_login .section_login_forget{
+    font-size: 15px;
+    color: rgb(220, 220, 27);
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.section_login .section_login_cross{
+    width: 100%;
+    position: relative;
+}
+.section_login .section_login_cross .text{
+    position: absolute;
+    top: -12px;
+    left: calc(50% - 45px);
+    font-size: 18px;
+    background: white;
+    width: 90px;
+    height: 20px;
+    text-align: center;
+}
+.section_login .section_login_cross .cross{
+    width: 100%;
+    height: 1px;
+    background: rgb(169, 167, 167);
+}
+
+.section_login .section_login_socical{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+.section_login .section_login_socical .github, .facebook{
+    background-image: url(https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_960_720.png);
+    width: 50px;
+    height: 50px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.section_login .section_login_socical .facebook{
+    background-image: url(https://cdn.tgdd.vn/2020/03/GameApp/Facebook-200x200.jpg);
+}
+.login_faile{
+    color: red;
+}

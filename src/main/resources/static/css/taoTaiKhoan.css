@@ -1,0 +1,30 @@
+.box{
+    background-color: rgb(178, 200, 200);
+}
+.box .box-form{
+    background-color: white;
+    width: 500px;
+    padding: 70px 20px 40px 20px;
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+.box .avatar{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: -50px;
+    left: 200px;
+    border-radius: 50%;
+    border: 1px solid rgb(114, 107, 107);
+    background: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 200;
+}
+.box .button-submit{
+    display: none;
+}

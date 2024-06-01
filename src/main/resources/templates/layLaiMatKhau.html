@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forget Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+     <link rel="stylesheet" th:href="@{/css/layMatKhau.css}" />
+<!--      <link href="../static/css/reset.css" rel="stylesheet">-->
+<!--      <link href="../static/css/layMatKhau.css" rel="stylesheet">-->
+</head>
+<body>
+
+<section class="container-fluid section_lay_lai d-flex justify-content-center align-items-center">
+        <form th:action="@{/xuli/email}" method="POST" class="section_animation d-flex flex-column justify-content-center align-items-center">
+            <label for="email">Email của bạn</label>
+            <input type="email" id="email" required class="mt-2 mb-4 email_receiver" name="emailReceiver">
+            <th:block th:if="${error} == 1">
+                <span class="mt-2 mb-2" style="color:red">*Mã xác nhận chưa chính xác</span>
+            </th:block>
+            <th:block th:if="${error} == 2">
+                <span class="mt-2 mb-2" style="color:red">*Email không tồn tại!!</span>
+            </th:block>
+            <th:block th:if="${error} == 3">
+                <span class="mt-2 mb-2" style="color:red">*Hệ thống bận !!</span>
+            </th:block>
+            <div>
+                <button class="btn btn-info button_xac_nhan" style="width:100%;color: white;">Xác nhận</button>
+                <button class="btn btn-info button_loading_email" style="width:100%; color: white;" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span style="color:white">Xác nhận</span>
+                </button>
+            </div>
+        </form>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script th:src="@{/js/layLaiMatKhau.js}"></script>
+<script src="../static/js/layLaiMatKhau.js"></script>
+</body>
+</html>

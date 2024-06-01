@@ -1,0 +1,37 @@
+.section_lay_lai{
+    background-color: rgb(178, 200, 200);
+    height: 100vh;
+}
+.section_lay_lai .section_animation{
+    width: 30%;
+    padding: 40px;
+    background-color: white;
+}
+
+.section_lay_lai .section_animation button{
+    width: 50%;
+    border: none;
+    padding: 8px;
+    margin-bottom: 20px;
+}
+
+.section_lay_lai .section_animation label{
+    font-size: 18px;
+}
+
+.section_lay_lai .section_animation input{
+    outline: none;
+    border: none;
+    font-size: 20px;
+    color: black;
+    padding: 4px;
+}
+
+.section_lay_lai .section_animation input:focus{
+    border-bottom: 1px solid rgb(196, 246, 157);
+}
+
+/* preloading */
+.button_loading_email{
+    display: none;
+}

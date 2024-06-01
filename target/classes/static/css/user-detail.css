@@ -1,0 +1,196 @@
+.section_body_left{
+    padding: 20px;
+}
+
+.section_body_top .box_info{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+/* ---- */
+.section_body_top .box_info [name="edit-info"]{
+    position: absolute;
+    bottom: 20px;
+    right: 0px;
+}
+/* ---- */
+
+.section_body_top .box_info .info_image{
+    width: 25%;
+    aspect-ratio: 1/1;
+}
+
+.section_body_top .box_info .info_image img{
+    width: 100%;
+    /* height: auto; */
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.section_body_top .box_info .info_content{
+    padding: 10px 20px;
+}
+
+.section_body_top .box_info .info_content .name{
+    margin-bottom: 0px;
+    font-size: 35px;
+    font-weight: 500;
+}
+
+.section_body_top .box_info .info_content .intro{
+    font-size: 21px;
+    margin-bottom: 8px;
+    color: #636B70;
+}
+
+.section_body_top .box_info .info_content .school{
+    font-size: 14px;
+    margin-bottom: 8px;
+    color:  #8d8d8e;
+}
+
+.section_body_top .box_info .info_content .email{
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #8d8d8e;
+}
+
+/* -----------body-bottom */
+.section_body_bottom > .row{
+    flex-wrap: nowrap;
+}
+
+.section_body_bottom .number_general{
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 8px;
+}
+
+.section_body_bottom .number_general .number{
+    font-size: 20px;
+    margin: 2px;
+}
+
+.section_body_bottom .number_general .text{
+    font-size: 14px;
+    color:  #8d8d8e;
+    margin: 2px;
+}
+
+.section_body_bottom .post, .section_body_bottom .answer{
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 8px;
+}
+
+.section_body_bottom .post .post-title, .section_body_bottom .answer .answer-title{
+    border-bottom:1px solid rgba(0, 0, 0, .125);
+    padding: 10px 20px;
+}
+
+.section_body_bottom .post .post-item, .section_body_bottom .answer .answer-item{
+    border-bottom:1px solid rgba(0, 0, 0, .125);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section_body_bottom .post .post-item:last-child, .section_body_bottom .answer .answer-item:last-child{
+    border-bottom:none;
+}
+
+.section_body_bottom .post .post-item i, .section_body_bottom .answer .answer-item i{
+    color: #18864B;
+    margin-right: 5px;
+}
+
+.section_body_bottom .post .post-item a, .section_body_bottom .answer .answer-item a{
+    color: hsl(210, 77%, 46%);
+}
+
+.section_body_bottom .post .date-create, .section_body_bottom .answer .date-create{
+    font-size: 14px;
+}
+
+
+/* ---model */
+.section-modal .btn-primary.focus, .btn-primary:focus {
+    border: 0;
+    box-shadow: none;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.section_body_top .box_info .modal-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.section_body_top .box_info .inner-title
+{
+    /* margin: 10px 0; */
+    font-weight: 700;
+}
+
+.section_body_top .box_info .modal-content{
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+.section_body_top .box_info .modal-header{
+    position: relative;
+}
+
+.section_body_top .box_info .modal-header .btn-close{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #000000;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    opacity: 0.9;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section_body_top .box_info .modal-body .form-group {
+    margin-bottom: 20px;
+}
+
+.section_body_top .box_info .modal-body label {
+    font-weight: bold;
+}
+
+.section_body_top .box_info .modal-body  input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Đảm bảo kích thước của input không bị thay đổi bởi padding và border */
+}
+
+.section_body_top .box_info .modal-body button{
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+/* preloading delete post */
+.button_delete_loading{
+    display: none;
+}
+
+
+
+

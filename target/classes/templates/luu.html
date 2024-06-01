@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Saved</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--    <link rel="stylesheet" href="../static/css/reset.css" />-->
+<!--    <link rel="stylesheet" href="../static/css/luu.css" />-->
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/luu.css}" />
+    <link rel="shortcut icon" type="image/png" th:href="${image.getShortCutIcon()}" />
+</head>
+
+<body>
+    <header
+            class="d-flex align-items-center justify-content-between w-100"
+    >
+        <span class="d-none array_follow" th:data-array-follow="${baiDangJson}"></span>
+        <span class="d-none info_id" th:text="${info.getId()}"></span>
+
+        <div class="header_logo">
+            <a th:href="@{/home}"
+            ><img
+                    th:src="${image.getImage()}"
+            /></a>
+        </div>
+        <div
+                class="header_search d-flex justify-content-center align-items-center"
+        >
+            <p>Products</p>
+            <div class="header_search_input w-100">
+                <!-- <div>icon</div> -->
+                <input type="text"
+                       onkeypress="handleKeyPress(event, this.value)"
+                />
+            </div>
+        </div>
+        <div class="header_info d-flex align-items-center">
+            <div class="box_notice">
+                <div class="position-relative header_info_notice">
+                    <img style="width: 100%;"
+                        src="https://cdn.icon-icons.com/icons2/2070/PNG/512/box_icon_126495.png"
+                    />
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notice_number" th:text="${noticeNotSeen}">
+                                    </span>
+                </div>
+                <ul class="notice_list">
+                    <th:block th:each=" n : ${notice}">
+                        <a th:href="@{'question/' + ${n.getThongbao().getBaidang().getId()}}" >
+                            <div class="notice_item" th:style="${n.getStatus() == true ? 'background-color:white;' : 'background-color:#d9d4d4;'}">
+                                <li th:text="${n.thongbao.noidung}"></li>
+                                <span th:text="${n.thongbao.thoigiantao}"></span>
+                            </div>
+                        </a>
+                    </th:block>
+                </ul>
+            </div>
+            <div class="header_info_image">
+                <a th:href="${'/user/' + info.id}"><img th:src="${info.getAnhDaiDien()}" alt="Avatar"></a>
+                <!--                        <img th:unless="${#strings.startsWith(info.getAnhDaiDien(), 'http')}" th:src="@{/images/{imageName}(imageName=${info.getAnhDaiDien()})}" alt="Avatar">-->
+            </div>
+        </div>
+    </header>
+    <section class="section_body d-flex">
+        <nav class="navbar_list">
+            <a th:href="@{/home}" class="navbar_items no_action">
+                <p>Home</p>
+            </a>
+            <a th:href="@{/question}" class="navbar_items no_action">
+                <p>Question</p>
+            </a>
+            <a th:href="@{/tag}" class="navbar_items no_action">
+                <p>Tag</p>
+            </a>
+            <div class="navbar_items action">
+                <p>Saved</p>
+            </div>
+            <a th:href="@{/users}" class="navbar_items no_action">
+                <p>Users</p>
+            </a>
+        </nav>
+        <div class="section_body_main d-flex flex-column">
+            <div class="section_body_top mt-3">
+                <div class="body_top">
+                    <div class="box_info d-flex">
+                        <div class="info_image">
+                            <img th:src="${info.getAnhDaiDien()}"
+                                alt="Ảnh đại diện">
+                        </div>
+                        <div class="info_content">
+                            <p class="name" th:text="${info.ten}"></p>
+                            <p class="intro" th:text="${info.gioiThieu}"></p>
+                            <i class="fa-solid fa-school"></i><p class="school" th:text="${info.truong}"></p>
+                            <i class="fa-regular fa-envelope"></i><p class="email" th:text="${info.email}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="body_bottom mt-4">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link" style="cursor: pointer;" aria-current="page" th:href="@{'/user/' + ${info.id}}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link active navbar_saved"  style="cursor: pointer;">Saved</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link navbar_setting" style="cursor: pointer;">Setting</a>
+                        </li>
+                      </ul>
+                </div>
+
+            </div>
+            <div class="section_body_bottom d-flex mb-4">
+                <div class="section_box_saved d-flex flex-column">
+                        <div class="modal_flex saved_title justify-content-between w-100">
+                            <p class="title">All saved </p>
+                            <div class="d-flex justify-content-center align-items-end" style="margin-right: 5%">
+                                <div class="mt-4 find_saved d-flex justify-content-center align-items-center">
+                                    <i class="fa-solid fa-magnifying-glass" style="color: #307bd1;"></i>
+                                    <input type="text" placeholder="Tìm kiếm..." th:value="${q}" onkeypress="handleSearch(event, this.value)">
+                                </div>
+                            </div>
+                        </div>
+                    <div class="box_saved">
+                        <th:block th:each="p : ${page}">
+                            <div class="item_saved pop_up p-3">
+                                <div class="item_saved_top modal_flex justify-content-between">
+                                    <div class="saved_left">
+                                        <span class="saved_left_des" th:text="${p.binhLuans.size() + ' answers'}"></span>
+                                        <span class="saved_left_des" th:text="${p.like.size() + ' likes'}"></span>
+                                        <div th:onclick="'window.location.href = \'' + @{/question/{id}(id=${p.Id})} + '\''" style="word-wrap: break-word;" class="saved_left_content" th:text="${p.tieude}"></div>
+                                    </div>
+                                    <div class="saved_right">
+                                        <button th:class="'btn btn-outline-info button_unsave' + ${p.id}" th:onclick="'handelModalDelete(' + ${p.id} + ')'"><i class="fa-solid fa-ellipsis-vertical" style="color: rgb(13, 202, 240);"></i></button>
+                                        <form method="GET" th:class="'saved_right_modal' + ${p.id} + ' saved_right_modal'" th:action="@{'/xuli/follow/' + ${p.id} + '/'  + ${info.id} +'/0'}">
+                                            <input class="d-none" th:value="${request.requestURI + (request.queryString != '' ? '?' + request.queryString : '')}" name="purpose">
+                                            <button style="border: none; outline: none; background-color: white" type="submit">Unsave</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="item_saved_bottom d-flex justify-content-between">
+                                    <div class="saved_bottom_left d-flex flex-wrap w-50">
+                                        <th:block th:each="t : ${p.tag}">
+                                            <span class="tag" th:text="${t.tenTag}"></span>
+                                        </th:block>
+                                    </div>
+                                    <div class="saved_bottom_right">
+                                        <img th:src="${p.thongTin.anhDaiDien}" style="width: 20px; height: 20px;" alt="avt">
+                                        <span class="name" th:text="${p.thongTin.ten}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${pagination.getTotal() > pagination.getCurrentPage()}">
+                            <a th:href="@{'/saved?page=' + ${pagination.getTotal() > pagination.getCurrentPage()+5 ? pagination.getCurrentPage()+5 :  pagination.getTotal()}}"><button class="btn btn-info" style="width: 100%">Xem thêm</button></a>
+                        </th:block>
+                    </div>
+                    <div class="section_body_setting w-100 modal_none justify-content-center align-items-center flex-column">
+                        <th:block th:if="${info.providerId != 'local'}">
+                            <button type="button" class="btn btn-outline-info mt-4  " th:text="${'Đang liên kết với ' + info.providerId}"></button>
+                        </th:block>
+                        <th:block th:unless="${info.providerId != 'local'}">
+                            <p style="margin-top: 50px; font-size: 24px; color: #307bd1; font-weight: 700;">Thay đổi mật khẩu</p>
+                            <form class="mt-4" th:action="@{'/xuli/user/' + ${info.id} + '/doimatkhau' }" method="POST">
+                                <input style="display: none" th:value="@{${request.requestURI} + ${request.queryString != null ?'?' + request.queryString : ''}}" name="purpose">
+                                <div class="form-floating mb-3" style="width: 500px;">
+                                    <input type="password" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                    <label for="floatingInput">Mật khẩu mới</label>
+                                </div>
+                                <div class="form-floating mb-4" style="width: 500px;">
+                                    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                    <label for="floatingPassword">Xác nhận lại</label>
+                                </div>
+                                <button type="submit" class="btn btn-info" id="button_thay_doi" disabled style="width: 500px; color: white; font-size: 18px;">Thay đổi</button>
+                            </form>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--    <script src="../static/js/base.js"> </script>-->
+<!--    <script src="../static/js/user-detail.js"></script>-->
+<!--    <script src="../static/js/luu.js"></script>-->
+    <script th:src="@{/js/base.js}"> </script>
+    <script th:src="@{/js/user-detail.js}"></script>
+    <script th:src="@{/js/luu.js}"></script>
+</body>
+
+</html>

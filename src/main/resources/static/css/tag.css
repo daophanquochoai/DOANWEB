@@ -1,0 +1,227 @@
+:root {
+    --lh: 1.4rem;
+}
+
+.truncate-overflow {
+    --max-lines: 3;
+    position: relative;
+    max-height: calc(var(--lh) * var(--max-lines));
+    overflow: hidden;
+    padding-right: 1rem;
+}
+
+.truncate-overflow::before {
+    position: absolute;
+    content: "...";
+    bottom: 0;
+    right: 0;
+}
+
+.truncate-overflow::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    background: white;
+}
+
+
+
+.v-truncate4 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+
+/* -------------------------truncate----------------------- */
+
+.section_body_main .section_body_left .section_body_top {
+    box-shadow: none;
+}
+
+.section_body_left .section_body_top {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.section_body_left .section_body_top .body-top_text {
+    width: 70%;
+}
+
+.section_body_left .section_body_top .text-title {
+    font-size: 26px;
+    font-weight: 500;
+    margin: 20px 0px;
+}
+
+.section_body_left .section_body_top .text-content {
+    line-height: 16px;
+    font-size: 14px;
+    /* letter-spacing: 1px; */
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 1px solid #bbb;
+    padding: 5px;
+    border-radius: 10px;
+    height: 40px;
+    width: 200px;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .search i {
+    position: absolute;
+    left: 5px;
+    color: #666666;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .search .input-search {
+    position: absolute;
+    border: none;
+    outline: none;
+    height: 30px;
+    left: 30px;
+    width: 150px;
+    font-size: 14px;
+    height: 25px;
+    color: #666666;
+}
+
+.section_body_left .section_body_top .body-top_showAllTags {
+    margin-bottom: 1rem;
+}
+
+.section_body_left .section_body_top .body-top_showAllTags a {
+    font-size: 12px;
+    color: hsl(210, 77%, 46%);
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 1px solid #bbb;
+    padding: 2px 5px;
+    border-radius: 8px;
+    height: 40px;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .filter .btn-item {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .filter .btn-item:hover {
+    background: #ececec;
+    border-radius: 5px;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .filter .btn-item.active {
+    background: #E3E6E8;
+    font-weight: 700;
+    border-radius: 5px;
+}
+
+
+/* --------------------- */
+.section_body_bottom .card-body .card-title
+{
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+.section_body_bottom .card-body .card-title a
+{
+    background: #e4eaf0;
+    color: hsl(210, 77%, 46%);
+    font-weight: 400;
+    padding: 5px;
+    border-radius: 5px;
+}
+.section_body_bottom .card-body .card-title a:hover
+{
+    background: #D6E8FA;
+}
+.section_body_bottom .card-body .card-text
+{
+    font-size: 14px;
+}
+.section_body_bottom .card-body .card-bottom
+{
+    font-size: 12px;
+    color: #303030;
+}
+
+/* ----------pagination--------- */
+.section_body_pagenation{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.pagination{
+    text-align: center;
+    user-select: none;
+}
+
+.pagination li
+{
+    display: inline-block;
+    margin: 5px;
+}
+
+.pagination li a{
+    line-height: 14px;
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.previous-page, .next-page {
+    width: 50px;
+    cursor: pointer;
+    border-radius: 45px;
+    transition: 0.3s ease;
+}
+
+.previous-page:hover, .next-page:hover, .current-page{
+    background: #ddd;
+    color: #fff;
+}
+
+
+.current-page{
+    background: #ccc;
+    width: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pagination li.dots a{
+    border: none;
+}
+
+.pagination .active{
+    background: orange !important;
+}
+
+.pagination .disable{
+    display: none;
+}

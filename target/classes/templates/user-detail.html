@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--    <link rel="stylesheet" href="../static/css/reset.css" />-->
+<!--    &lt;!&ndash; <link rel="stylesheet" href="../static/css/home.css" /> &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="../static/css/user-detail.css">-->
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <!-- <link rel="stylesheet" href="../static/css/home.css" /> -->
+    <link rel="stylesheet" th:href="@{/css/user-detail.css}">
+    <link rel="shortcut icon" type="image/png" th:href="${image.getShortCutIcon()}" />
+</head>
+
+<body>
+    <header
+            class="d-flex align-items-center justify-content-between w-100"
+    >
+        <span class="d-none array_follow" th:data-array-follow="${baiDangJson}"></span>
+        <span class="d-none info_id" th:text="${info.getId()}"></span>
+
+        <div class="header_logo">
+            <a th:href="@{/home}"
+            ><img
+                    th:src="${image.getImage()}"
+            /></a>
+        </div>
+        <div
+                class="header_search d-flex justify-content-center align-items-center"
+        >
+            <p>Products</p>
+            <div class="header_search_input w-100">
+                <!-- <div>icon</div> -->
+                <input />
+            </div>
+        </div>
+        <div class="header_info d-flex align-items-center">
+            <div class="box_notice">
+                <div class="position-relative header_info_notice">
+                    <img style="width: 100%;"
+                         src="https://cdn.icon-icons.com/icons2/2070/PNG/512/box_icon_126495.png"
+                    />
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notice_number" th:text="${noticeNotSeen}">
+                                </span>
+                </div>
+                <ul class="notice_list">
+                    <th:block th:each=" n : ${notice}">
+                        <a th:href="@{'question/' + ${n.getThongbao().getBaidang().getId()}}" >
+                            <div class="notice_item" th:style="${n.getStatus() == true ? 'background-color:white;' : 'background-color:#d9d4d4;'}">
+                                <li th:text="${n.thongbao.noidung}"></li>
+                                <span th:text="${n.thongbao.thoigiantao}"></span>
+                            </div>
+                        </a>
+                    </th:block>
+                </ul>
+            </div>
+            <div class="header_info_image">
+                <a th:href="${'/user/' + info.id}"><img th:src="${info.getAnhDaiDien()}" alt="Avatar"></a>
+                <!--                        <img th:unless="${#strings.startsWith(info.getAnhDaiDien(), 'http')}" th:src="@{/images/{imageName}(imageName=${info.getAnhDaiDien()})}" alt="Avatar">-->
+            </div>
+        </div>
+    </header>
+    <section class="section_body d-flex">
+        <nav class="navbar_list">
+            <!--       thanh navabar         -->
+            <nav class="navbar_list w-100">
+                <a th:href="@{/home}" class="navbar_items no_action">
+                    <p>Home</p>
+                </a>
+                <a th:href="@{/question}" class="navbar_items no_action">
+                    <p>Question</p>
+                </a>
+                <a th:href="@{/tag}" class="navbar_items no_action">
+                    <p>Tag</p>
+                </a>
+                <a th:href="@{/saved}" class="navbar_items no_action">
+                    <p>Saved</p>
+                </a>
+                <div class="navbar_items action">
+                    <p>Users</p>
+                </div>
+            </nav>
+        </nav>
+        <div class="section_body_main d-flex">
+            <div class="section_body_left">
+                <div class="section_body_top">
+                    <div class="box_info">
+                        <div class="info_image">
+                            <img th:src="${infoXem.getAnhDaiDien()}"
+                                alt="Ảnh đại diện">
+                        </div>
+                        <div class="info_content">
+                            <p class="name" th:text="${infoXem.ten}"></p>
+                            <p class="intro" th:text="${infoXem.gioiThieu}"></p>
+                            <i class="fa-solid fa-school"></i><p class="school"th:text="${infoXem.truong}"></p>
+                            <i class="fa-regular fa-envelope"></i><p class="email" th:text="${infoXem.email}"></p>
+                        </div>
+
+                        <th:block th:if="${info.id == infoXem.id}">
+                            <th:block th:if="${info.providerId == 'github'}">
+                                <button type="button" class="btn btn-outline-secondary" name="edit-info">
+                                    <box-icon type='logo' name='github'></box-icon>
+                                </button>
+                            </th:block>
+                            <th:block th:if="${info.providerId == 'facebook'}">
+                                <button type="button" class="btn btn-outline-secondary" name="edit-info">
+                                    <box-icon type='logo' name='facebook-square'></box-icon>
+                                </button>
+                            </th:block>
+                            <th:block th:if="${info.providerId == 'local'}">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" name="edit-info">
+                                        Edit Profile
+                                </button>
+                            </th:block>
+                            <!-- Button trigger modal -->
+                            <a th:href="@{/logout}"><button class="btn btn-danger">Logout</button></a>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Update profit</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                                X
+                                            </button>
+                                        </div>
+                                        <div class="modal-body form-edit">
+                                            <form th:action="@{'/xuli/user/' + ${info.id}}" method="POST" th:object="${infoXem}" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="Ho">Họ</label>
+                                                    <input type="text" class="form-control" th:field="*{ho}" id="Ho" name="Ho" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Ten">Tên</label>
+                                                    <input type="text" class="form-control" th:field="*{ten}" id="Ten" name="Ten" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Truong">Trường</label>
+                                                    <input type="text" class="form-control" th:field="*{truong}" id="Truong" name="Truong">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Sdt">Số điện thoại</label>
+                                                    <input type="text" class="form-control" th:field="*{sdt}" id="Sdt" name="Sdt">
+                                                </div>
+                                                <th:block th:if="${info.providerId == 'local'}">
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" th:field="*{email}" id="email" name="email">
+                                                    </div>
+                                                </th:block>
+                                                <div class="form-group">
+                                                    <label for="GioiThieu">Giới thiệu</label>
+                                                    <input type="text" class="form-control" th:field="*{gioiThieu}" id="GioiThieu" name="GioiThieu">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="AnhDaiDien">Ảnh đại diện</label>
+                                                    <input type="file" class="form-control-file" id="AnhDaiDien" name="avt" accept="image/*">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary col-xl-12 text-center">
+                                                    Update
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="section_body_bottom my-4">
+                    <!-- row-cols-xl-4 -->
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row row-cols-2 number_general">
+                                <div class="col">
+                                    <div class="question">
+                                        <p class="number" th:text="${colcu.baidang}"></p>
+                                        <p class="text">questions</p>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="answers">
+                                        <p class="number" th:text="${colcu.binhluan}"></p>
+                                        <p class="text">answers</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9 mx-3">
+                            <div class="post mb-4">
+                                <div class="post-title">
+                                    <h4>Recent posts</h4>
+                                </div>
+                                <div class="post-content" style="max-height: 200px; overflow: auto">
+                                    <th:block th:each=" b : ${infoXem.getBaiDangs()}">
+                                        <div class="post-item">
+                                            <div class="item-text d-flex" style="width: 40%; overflow: hidden;">
+                                                <i class="fa-solid fa-message"></i>
+                                                <a th:href="@{'/question/' + ${b.id}}" th:text="${b.tieude}"></a>
+                                            </div>
+                                            <div class="date-create" th:text="${b.thoigiantao}"></div>
+                                            <th:block th:if="${info.id == infoXem.id}">
+                                                <div data-bs-toggle="modal" th:data-bs-target="'#deletePost' + ${b.id}" style="cursor:pointer;">
+                                                    <i class="fa-solid fa-trash" style="color: #18864b;"></i>
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" th:id="'deletePost' + ${b.id}" tabindex="-1" th:aria-labelledby="'exampleModalLabel' + ${b.id}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Do you want delete question :</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="w-100 mb-3" style="word-wrap: break-word;" >
+                                                            <span style="color: #dc3545">Title :</span>
+                                                            <p style="word-wrap: break-word;" th:text="${b.tieude}"></p>
+                                                        </div>
+                                                        <div class="w-100 break-word">
+                                                            <span style="color: #dc3545">Content :</span>
+                                                            <p style="word-wrap: break-word;" th:text="${b.noidung}"></p>
+                                                        </div>
+                                                        <span style="font-size: 12px; font-weight: 700" th:text="${b.thoigiantao}"></span>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <form th:action="@{'/xuli/delete/question/' + ${b.id}}" method="POST">
+                                                            <input style="display: none" name="purpose" th:value="${request.requestURI}">
+                                                            <button type="submit" th:onclick="'handleDeletePreloading(\'' + ${b.id}+ '\')'" th:class="'btn btn-danger button_delete' + ${b.id}">Delete</button>
+                                                            <button th:class="'btn btn-danger button_delete_loading button_delete_loading' + ${b.id}" type="button" disabled>
+                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                                <span style="color:white">Đang xóa...</span>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  End Modal  -->
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="answer">
+                                <div class="answer-title">
+                                    <h4>Recent answers</h4>
+                                </div>
+                                <div class="answer-content" style="max-height: 200px; overflow: auto">
+                                    <th:block th:each="b : ${infoXem.binhLuans}">
+                                        <div class="answer-item">
+                                            <div class="item-text">
+                                                <i class="fa-solid fa-message"></i>
+                                                <a th:href="@{'/question/' + ${b.baidang.id}}" th:text="${b.noidung}"></a>
+                                            </div>
+                                            <div class="date-create" th:text="${b.date}"></div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="section_body_pagenation">
+                    <div class="pagination"></div>
+                </div> -->
+                </div>
+                <div class="section_body_right"></div>
+            </div>
+    </section>
+
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--    <script src="../static/js/base.js"> </script>-->
+<!--    <script src="../static/js/home.js"></script>-->
+<!--    <script src="../static/js/user-detail.js"></script>-->
+    <script th:src="@{/js/base.js}"></script>
+    <script th:src="@{/js/user-detail.js}"></script>
+</body>
+
+</html>
