@@ -2,7 +2,7 @@
     --lh: 1.4rem;
 }
 
-.truncate-overflow {
+/* .truncate-overflow {
     --max-lines: 3;
     position: relative;
     max-height: calc(var(--lh) * var(--max-lines));
@@ -24,7 +24,7 @@
     width: 1rem;
     height: 1rem;
     background: white;
-}
+} */
 
 
 
@@ -33,9 +33,14 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     overflow: hidden;
-  }
+}
 
 /* -------------------------truncate----------------------- */
+
+.section_body_main .section_body_left{
+    flex: 1;
+    padding: 0 15px;
+}
 
 .section_body_main .section_body_left .section_body_top {
     box-shadow: none;
@@ -59,9 +64,10 @@
 }
 
 .section_body_left .section_body_top .text-content {
-    line-height: 16px;
+    line-height: 20px;
     font-size: 14px;
-    /* letter-spacing: 1px; */
+    letter-spacing: 1px;
+    font-weight: 500;
 }
 
 .section_body_left .section_body_top .body-top_filterAndSearch .search {
@@ -136,20 +142,48 @@
     border-radius: 5px;
 }
 
+.section_body_left .section_body_top .body-top_filterAndSearch .create-and-filter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/* --------------------- */
+.section_body_left .section_body_top .body-top_filterAndSearch .create-and-filter .create button{
+    border: none;
+    border-radius: 5px;
+    padding: 6px 20px;
+    width: 150px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #0c90fb;
+    color: #fff;
+}
+
+.section_body_left .section_body_top .body-top_filterAndSearch .create-and-filter .create button:hover{
+    background-color: #0c90fb;
+}
+
+
+/* --------------------card------- */
 .section_body_bottom .card-body .card-title
 {
     font-size: 14px;
     margin-bottom: 1rem;
 }
+
+.section_body_bottom .card-body .card
+{
+    position: relative;
+}
+
 .section_body_bottom .card-body .card-title a
 {
     background: #e4eaf0;
     color: hsl(210, 77%, 46%);
-    font-weight: 400;
+    font-weight: 600;
     padding: 5px;
     border-radius: 5px;
+    position: relative;
 }
 .section_body_bottom .card-body .card-title a:hover
 {
@@ -157,12 +191,23 @@
 }
 .section_body_bottom .card-body .card-text
 {
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
 }
 .section_body_bottom .card-body .card-bottom
 {
     font-size: 12px;
     color: #303030;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    width: 88%;
+}
+
+.section_body_bottom .card-body .card-bottom p{
+    margin: 0;
 }
 
 /* ----------pagination--------- */
@@ -225,3 +270,198 @@
 .pagination .disable{
     display: none;
 }
+
+/* ============tag hover========= */
+.section_body_bottom .card-body .card-title .tag-name:hover + .tag-hover{
+    display: block;
+    transform-origin: calc(100% - 350px) top;
+    animation: box-appears ease-in 0.2s;
+}
+
+.tag-hover{
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 20px 10px 15px 20px;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    min-width: 400px;
+    top: 40px;
+    left: -50px;
+    z-index: 20;
+    display: none;
+}
+
+.tag-hover:hover{
+    display: block;
+}
+
+.tag-hover::before{
+    content: "";
+    position: absolute;
+    background:transparent;
+    width: 120px;
+    height: 15px;
+    top: -10px;
+    left: 50px;
+}
+
+.tag-text{
+    margin-bottom: 10px;
+}
+
+.tag-question-quantity{
+    font-size: 14px;
+    color: #8A4D1B;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+.tag-question-quantity i{
+    margin-right: 5px;
+}
+
+.tag-content{
+    color: #666666;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    margin-bottom: 0;
+}
+
+.tag-button button{
+    background: #0d6efd;
+    outline: none;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+.tag-button button:hover{
+    background: #4891ff;
+}
+
+
+@keyframes box-appears{
+    from{
+        opacity: 0;
+        transform: scale(0);
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==========modal create======= */
+.modal-add-tag{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #00000071;
+    z-index: 100000;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-add-tag .modal-tag{
+    background-color: #fff;
+    width: 600px;
+    border-radius: 8px;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.modal-add-tag .modal-tag .close-modal{
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    color: #bbb;
+    transition: 0.4s;
+}
+
+.modal-add-tag .modal-tag .close-modal:hover{
+    background-color: #ddd;
+    color: #333;
+}
+
+.modal-add-tag .modal-title{
+    text-align: center;
+    font-weight: 600;
+    margin: 5px 0;
+}
+
+.modal-add-tag .modal-title p{
+    margin-bottom: 0;
+}
+
+
+.modal-add-tag .modal-body label{
+    font-weight: 500;
+}
+
+.modal-add-tag .modal-body input{
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+
+}
+
+.modal-add-tag .modal-body textarea{
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.modal-add-tag .modal-body input:focus-visible{
+    outline: 2px solid #02a4fb;
+    border-radius: 5px;
+}
+
+.modal-add-tag .modal-body textarea:focus-visible{
+    outline: 2px solid #02a4fb;
+    border-radius: 5px;
+}
+
+.modal-add-tag .modal-body button{
+    background: #0d6efd;
+    outline: none;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100%;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+.modal-add-tag .modal-body button:hover{
+    background: #4891ff;
+}
+

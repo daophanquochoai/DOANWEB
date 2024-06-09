@@ -52,9 +52,6 @@ public class ThongTinImpl implements ThongTinInter {
         thongTinGoc.setTruong(thongTin.getTruong());
         thongTinGoc.setEmail(thongTin.getEmail());
         thongTinGoc.setGioiThieu(thongTin.getGioiThieu());
-        System.out.println("============================");
-        log.info("{}", thongTin.getTen());
-        System.out.println("============================");
         return thongTinRepository.save(thongTinGoc);
     }
 
@@ -70,12 +67,17 @@ public class ThongTinImpl implements ThongTinInter {
 
     @Override
     public pageUsers_ThongTin layThongTinTheoPageVaQ(Integer page, String q) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, 8);
         Page<ThongTin> list;
         if (q == null || q.isEmpty()) {
             q = "";
         }
         list = thongTinRepository.findAllUserWithQ(q, pageRequest);
         return new pageUsers_ThongTin(list, new Pagination(list.getTotalPages(),page+1));
+    }
+
+    @Override
+    public Optional<ThongTin> layThongTinBySdt(String sdt) {
+        return thongTinRepository.findBySdt(sdt);
     }
 }

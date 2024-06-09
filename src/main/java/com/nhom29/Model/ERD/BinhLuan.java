@@ -20,7 +20,7 @@ public class BinhLuan implements Serializable {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "UserID", nullable = false)
     private ThongTin thongTin;
     @Column(columnDefinition = "DATETIME", nullable = false)
@@ -30,7 +30,7 @@ public class BinhLuan implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "BinhLuanID")
     private Set<HinhAnhBinhLuan> hinhAnh  = new HashSet<>();
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn( name = "baidangId", nullable = false)
     private BaiDang baidang;
 }

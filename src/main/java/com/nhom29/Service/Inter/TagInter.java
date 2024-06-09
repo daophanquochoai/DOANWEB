@@ -11,4 +11,6 @@ public interface TagInter {
     Tag save(Tag tag);
     Tag getTagByName(String name);
     Page<Tag> getTagInPage( Integer page);
+    Tag saveTagALl(Tag tag, List<Tag> tags);
+    Page<Tag> phanTrangTag(int offset, int pageSize, String sort, String q);
 }

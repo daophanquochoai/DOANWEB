@@ -101,6 +101,7 @@ const buttonTaoBaiViet = document.querySelector(".tao_bai_viet")
 const buttonLoadingTaoBaiViet = document.querySelector(".button_loading");
 const inputTieuDe = document.querySelector(".input_title")
 const inputNoiDung = document.querySelector(".input_noi_dung")
+console.log(buttonLoadingTaoBaiViet)
 
 buttonTaoBaiViet.addEventListener("click", ()=>{
     if( inputNoiDung.value != "" && inputTieuDe.value != ""){

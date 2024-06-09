@@ -12,6 +12,7 @@ import com.nhom29.Service.Inter.ThongBaoInter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,38 +38,54 @@ public class ThongBaoImpl implements ThongBaoInter {
     }
 
     @Override
+    @Transactional
     public void taoThongBaoTheoBaiDang(Long baiDangId, long nguoiCommentId) {
-        Optional<BaiDang> baidang = baiDangRepo.findById(baiDangId);
-        if( baidang.isEmpty() ) throw new RuntimeException("bai dang khong ton tai");
-        Optional<ThongTin> nguoicomment = thongTinRepo.findById(nguoiCommentId);
-        if( nguoicomment.isEmpty() ) throw new RuntimeException("nguoi comment khong ton tai");
+        Optional<BaiDang> baidangOpt = baiDangRepo.findById(baiDangId);
+        if (baidangOpt.isEmpty()) {
+            throw new RuntimeException("bai dang khong ton tai");
+        }
+
+        Optional<ThongTin> nguoicommentOpt = thongTinRepo.findById(nguoiCommentId);
+        if (nguoicommentOpt.isEmpty()) {
+            throw new RuntimeException("nguoi comment khong ton tai");
+        }
+
+        BaiDang baidang = baidangOpt.get();
+        ThongTin nguoicomment = nguoicommentOpt.get();
+
         ThongBao thongbao = new ThongBao();
-        thongbao.setBaidang(baidang.get());
+        thongbao.setBaidang(baidang);
         thongbao.setThoigiantao(LocalDateTime.now());
-        ThongBao_ThongTin thongBaoThongTin = new ThongBao_ThongTin();
-        thongBaoThongTin.setStatus(false);
-        baidang.get().getLuu().stream().forEach( t -> {
-            if( t.getId() != nguoiCommentId ) {
-                thongbao.setNoidung("Bài đăng bạn theo dõi đã có " + nguoicomment.get().getTen() + " bình luận");
-                thongBaoThongTin.setThongbao(thongbao);
+        baidang.getLuu().stream().forEach(t -> {
+            if (t.getId() != nguoiCommentId) {
+                ThongBao_ThongTin thongBaoThongTin = new ThongBao_ThongTin();
+                thongbao.setNoidung("Bài đăng bạn theo dõi đã có " + nguoicomment.getTen() + " bình luận");
+                ThongBao temp = thongBaoRepo.save(thongbao);
+                thongBaoThongTin.setThongbao(temp);
                 thongBaoThongTin.setThongTin(t);
-                System.out.println("====================================");
-                log.info("{}",thongBaoThongTinRepo.save(thongBaoThongTin).getThongTin().getTen());
-                System.out.println("====================================");
+                thongBaoThongTin.setStatus(false);
+                thongBaoThongTinRepo.save(thongBaoThongTin);
             }
         });
-        if( nguoiCommentId != baidang.get().getThongTin().getId()) {
-            thongbao.setNoidung("Bài đăng của bạn đã có " + nguoicomment.get().getTen() + " bình luận");
-            thongBaoThongTin.setThongbao(thongbao);
-            thongBaoThongTin.setThongTin(baidang.get().getThongTin());
-            System.out.println("====================================");
-            log.info("{}", thongBaoThongTinRepo.save(thongBaoThongTin).getThongTin().getTen());
-            System.out.println("====================================");
+
+        if (nguoiCommentId != baidang.getThongTin().getId()) {
+            System.out.println("================================");
+            System.out.println("Bài đăng của bạn đã có " + nguoicomment.getTen() + " bình luận");
+            System.out.println("================================");
+            ThongBao_ThongTin thongBaoThongTin = new ThongBao_ThongTin();
+            thongbao.setNoidung("Bài đăng của bạn đã có " + nguoicomment.getTen() + " bình luận");
+            ThongBao temp = thongBaoRepo.save(thongbao);
+            thongBaoThongTin.setThongbao(temp);
+            thongBaoThongTin.setThongTin(baidang.getThongTin());
+            thongBaoThongTin.setStatus(false);
+            thongBaoThongTinRepo.save(thongBaoThongTin);
         }
     }
 
+
     @Override
     public void docThongBaoTheoNguoi(Long nguoiId, Long BaiDangId) {
+        System.out.println(nguoiId);
         Optional<ThongTin> thongtin = thongTinRepo.findById(nguoiId);
         if( thongtin.isEmpty() ) throw new RuntimeException("Not found thongtin");
         thongtin.get().getThongBaoThongTin().forEach(t -> {
@@ -84,5 +101,10 @@ public class ThongBaoImpl implements ThongBaoInter {
     public long thongBaoChuaXem(Long id) {
         List<ThongBao_ThongTin> thongBaoThongTins = layThongBaoTheoNguoi(id);
         return thongBaoThongTins.stream().filter( s -> !s.getStatus()).count();
+    }
+
+    @Override
+    public void deleteById(Long Id) {
+        thongBaoRepo.deleteById(Id);
     }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ThongTin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(columnDefinition = "varchar(255)")
+    @Column(columnDefinition = "varchar(255)", unique = true)
     private String Email;
     @Column(columnDefinition = "nvarchar(100)")
     private String Ho;
@@ -26,7 +27,7 @@ public class ThongTin implements Serializable {
     private String Ten;
     @Column(columnDefinition = "nvarchar(255)")
     private String Truong;
-    @Column(columnDefinition = "varchar(10)")
+    @Column(columnDefinition = "varchar(10)", unique = true)
     private String Sdt;
     @Column(name = "AnhDaiDien", columnDefinition = "TEXT")
     private String anhDaiDien;
@@ -37,14 +38,15 @@ public class ThongTin implements Serializable {
     private TaiKhoan_ThongTin taiKhoanThongTin;
     @Column(columnDefinition = "varchar(20)")
     private String providerId;
-    @ManyToMany(mappedBy = "luu", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "luu", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private List<BaiDang> baiDang_Luu = new ArrayList<>();
-    @ManyToMany(mappedBy = "like", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "like", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private List<BaiDang> baiDang_Like = new ArrayList<>();
-    @OneToMany(mappedBy = "thongTin", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "thongTin", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<BaiDang> baiDangs = new ArrayList<>();
-    @OneToMany(mappedBy = "thongTin", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "thongTin", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<ThongBao_ThongTin> thongBaoThongTin = new ArrayList<>();
     @OneToMany(mappedBy = "thongTin", fetch = FetchType.EAGER)
+    @Cascade({org.hibernate.annotations.CascadeType.DETACH})
     private List<BinhLuan> binhLuans;
 }

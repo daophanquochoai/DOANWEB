@@ -32,6 +32,12 @@ public class FollowImpl implements FollowInter {
         baiDang.get().getLuu().add(thongTin.get());
         BaiDang b = baiDangRepo.save(baiDang.get());
         redisTemplate.opsForValue().set( HomeController.KEY_BD + ":" + baidangId, b, 4, TimeUnit.HOURS);
+        thongTin = thongTinRepo.findById(thongtinId);
+        if( thongTin.get().getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getId(),thongTin.get(), 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getTaiKhoanThongTin().getTaiKhoan().getUsername(),thongTin.get(), 4, TimeUnit.HOURS );
+        }
     }
 
     @Override
@@ -44,6 +50,12 @@ public class FollowImpl implements FollowInter {
         baiDang.get().setLuu(baiDang.get().getLuu().stream().filter(t -> t.getId() != thongtinId).collect(Collectors.toList()));
         BaiDang b =baiDangRepo.save(baiDang.get());
         redisTemplate.opsForValue().set( HomeController.KEY_BD + ":" + baidangId, b, 4, TimeUnit.HOURS);
+        thongTin = thongTinRepo.findById(thongtinId);
+        if( thongTin.get().getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getId(),thongTin.get(), 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getTaiKhoanThongTin().getTaiKhoan().getUsername(),thongTin.get(), 4, TimeUnit.HOURS );
+        }
     }
 
     @Override
@@ -55,6 +67,12 @@ public class FollowImpl implements FollowInter {
         baiDang.get().getLike().add(thongTin.get());
         BaiDang b = baiDangRepo.save(baiDang.get());
         redisTemplate.opsForValue().set( HomeController.KEY_BD + ":" + baidangId, b, 4, TimeUnit.HOURS);
+        thongTin = thongTinRepo.findById(thongtinId);
+        if( thongTin.get().getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getId(),thongTin.get(), 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getTaiKhoanThongTin().getTaiKhoan().getUsername(),thongTin.get(), 4, TimeUnit.HOURS );
+        }
     }
 
     @Override
@@ -67,5 +85,11 @@ public class FollowImpl implements FollowInter {
         baiDang.get().setLike(baiDang.get().getLike().stream().filter(t -> t.getId() != thongtinId).collect(Collectors.toList()));
         BaiDang b =baiDangRepo.save(baiDang.get());
         redisTemplate.opsForValue().set( HomeController.KEY_BD + ":" + baidangId, b, 4, TimeUnit.HOURS);
+        thongTin = thongTinRepo.findById(thongtinId);
+        if( thongTin.get().getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getId(),thongTin.get(), 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin.get().getTaiKhoanThongTin().getTaiKhoan().getUsername(),thongTin.get(), 4, TimeUnit.HOURS );
+        }
     }
 }

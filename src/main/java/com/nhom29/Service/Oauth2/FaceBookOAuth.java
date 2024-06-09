@@ -1,6 +1,5 @@
 package com.nhom29.Service.Oauth2;
 
-import java.sql.Blob;
 import java.util.Map;
 public class FaceBookOAuth extends OAuth2UserInfo {
 
@@ -20,7 +19,7 @@ public class FaceBookOAuth extends OAuth2UserInfo {
 
     @Override
     public String getEmail() {
-        return (String) attributes.get("email");
+        return (String) attributes.get("email") + "facebook";
     }
 
     @Override

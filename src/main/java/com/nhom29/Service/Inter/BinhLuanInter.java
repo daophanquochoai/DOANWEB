@@ -6,4 +6,5 @@ import org.springframework.data.domain.Page;
 public interface BinhLuanInter {
     Page<BinhLuan> layBinhLuanTheoBaiDangVaPhanTrang( Long id, Integer soluong, String sort);
     BinhLuan luuBinhLuan(BinhLuan binhLuan);
+    void deleteById(Long id);
 }

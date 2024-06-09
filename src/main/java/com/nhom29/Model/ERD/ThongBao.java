@@ -20,7 +20,7 @@ public class ThongBao implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "thongbao")
+    @OneToMany( fetch = FetchType.EAGER, mappedBy = "thongbao")
     private List<ThongBao_ThongTin> thongBaoThongTin = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "BaiDangId", nullable = false)

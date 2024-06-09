@@ -3,10 +3,14 @@ package com.nhom29.Service.Impl;
 import com.nhom29.Cotnroller.HomeController;
 import com.nhom29.DTO.pageQuestion_BaiDang;
 import com.nhom29.Model.ERD.BaiDang;
+import com.nhom29.Model.ERD.ThongBao;
 import com.nhom29.Model.ERD.ThongTin;
 import com.nhom29.Repository.BaiDangRepository;
+import com.nhom29.Repository.ThongBaoRepository;
+import com.nhom29.Repository.ThongBao_ThongTinRepository;
 import com.nhom29.Repository.ThongTinRepository;
 import com.nhom29.Service.Inter.BaiDangInter;
+import com.nhom29.Service.Inter.BinhLuanInter;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +35,9 @@ public class BaiDangImpl implements BaiDangInter {
     private final BaiDangRepository baiDangRepo;
     private final ThongTinRepository thongTinRepo;
     private final RedisTemplate redisTemplate;
+    private final BinhLuanInter binhLuanInter;
+    private final ThongBaoRepository thongBaoRepo;
+    private final ThongBao_ThongTinRepository thongBaoThongTinRepo;
     @Override
     public Page<BaiDang> timBaiDangPhanTrang(int offset, int pageSize, String feild) {
         return baiDangRepo.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(feild).descending()));
@@ -40,8 +47,6 @@ public class BaiDangImpl implements BaiDangInter {
     @Override
     public BaiDang saveBaiDang(BaiDang baiDang) {
         BaiDang baiDang1 =  baiDangRepo.save(baiDang);
-        redisTemplate.opsForValue().set(HomeController.KEY + ":" + baiDang1.getThongTin().getId(), thongTinRepo.findById(baiDang1.getThongTin().getId()).get(), 4, TimeUnit.HOURS);
-        redisTemplate.opsForValue().set(HomeController.KEY_BD + ":" + baiDang1.getId(), baiDang1, 4, TimeUnit.HOURS);
         return baiDang1;
 
     }
@@ -54,9 +59,6 @@ public class BaiDangImpl implements BaiDangInter {
 
     @Override
     public Optional<BaiDang> layChiTietBaiDang(Long id) {
-        System.out.println("============================");
-        System.out.println("USING DB");
-        System.out.println("============================");
         return baiDangRepo.findById(id);
     }
 
@@ -109,18 +111,52 @@ public class BaiDangImpl implements BaiDangInter {
 
     @Override
     public void deleteQuestion(Long baidang) {
-        BaiDang baiDang = new BaiDang();
-        if( redisTemplate.opsForValue().get(HomeController.KEY_BD + ":" + baidang) != null){
-            baiDang = (BaiDang) redisTemplate.opsForValue().get(HomeController.KEY_BD + ":" + baidang);
-        }else {
+        System.out.println("=============================================");
+        System.out.println("Dang xoa");
+        System.out.println("=============================================");
+
+        BaiDang baiDang = (BaiDang) redisTemplate.opsForValue().get(HomeController.KEY_BD + ":" + baidang);
+
+        if (baiDang == null) {
             baiDang = baiDangRepo.findById(baidang).orElseThrow(() -> new EntityNotFoundException("BaiDang not found"));
         }
+
+        System.out.println("=============================================");
+        System.out.println("Dang xoa BinhLuan " + baiDang.getBinhLuans().size());
+        System.out.println("=============================================");
+        baiDang.getBinhLuans().forEach(binhLuan -> binhLuanInter.deleteById(binhLuan.getId()));
+
+        System.out.println("=============================================");
+        System.out.println("Dang xoa Thong Bao " + baiDang.getThongBaoList().size());
+        System.out.println("=============================================");
+        List<ThongBao> thongBaoList = baiDang.getThongBaoList();
+        if (thongBaoList != null) {
+            for (ThongBao thongBao : thongBaoList) {
+                thongBao.getThongBaoThongTin().forEach(thongBaoThongTin -> thongBaoThongTinRepo.delete(thongBaoThongTin));
+                thongBaoRepo.delete(thongBao);
+                log.debug("Deleted ThongBao with ID: {}", thongBao.getId());
+            }
+        }
+
+        System.out.println("=============================================");
+        System.out.println("Dang xoa Bai Dang");
+        System.out.println("=============================================");
         baiDangRepo.delete(baiDang);
-        System.out.println("=============================");
-        System.out.println(HomeController.KEY + ":" + baiDang.getThongTin().getId());
-        System.out.println("=============================");
-        redisTemplate.opsForValue().set( HomeController.KEY + ":" + baiDang.getThongTin().getId(), thongTinRepo.findById(baiDang.getThongTin().getId()).get(), 4, TimeUnit.HOURS );
-        redisTemplate.delete( HomeController.KEY_BD + ":" + baidang);
+
+        System.out.println("=============================================");
+        System.out.println("Tien hanh luu redis");
+        System.out.println("=============================================");
+        ThongTin thongTin = baiDang.getThongTin();
+        if (thongTin.getTaiKhoanThongTin() == null) {
+            redisTemplate.opsForValue().set(HomeController.KEY + ":" + thongTin.getId(), thongTinRepo.findById(thongTin.getId()).get(), 4, TimeUnit.HOURS);
+        } else {
+            redisTemplate.opsForValue().set(HomeController.KEY + ":" + thongTin.getTaiKhoanThongTin().getTaiKhoan().getUsername(), thongTinRepo.findById(thongTin.getId()).get(), 4, TimeUnit.HOURS);
+        }
+        redisTemplate.delete(HomeController.KEY_BD + ":" + baidang);
+
+        System.out.println("=============================================");
+        System.out.println("Xoa thanh cong");
+        System.out.println("=============================================");
     }
 
     @Override

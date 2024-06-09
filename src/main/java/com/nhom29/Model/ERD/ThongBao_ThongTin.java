@@ -17,10 +17,10 @@ public class ThongBao_ThongTin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne( fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "thongTin")
     private ThongTin thongTin;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "thongBao")
     private ThongBao thongbao;
     private Boolean status;

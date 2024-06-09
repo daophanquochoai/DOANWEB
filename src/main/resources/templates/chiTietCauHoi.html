@@ -172,7 +172,7 @@
                 <div class="section_binhluan mt-5">
                     <div class="section_binhluan_top d-flex justify-content-between mt-5 mb-3">
                         <div>
-                            <span th:text="${chiTietBaiDang.binhLuans.size()}"></span> Answer
+                            <span th:text="${chiTietBaiDang.binhLuans.size() + 1}"></span> Answer
                         </div>
                         <div class="dropdown">
                             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
@@ -237,12 +237,12 @@
                             </div>
                             <div class="d-flex input_content justify-content-between align-items-center">
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="comment" name="noidung" th:field="*{noidung}"></textarea>
+                                    <textarea class="form-control" id="comment" name="noidung" th:field="*{noidung}" required></textarea>
                                     <label for="comment">Comments</label>
                                 </div>
                                 <div class="box_send">
                                     <button type="submit" class="btn btn-info round-circle button_send"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i></button>
-                                    <button class="btn btn-info button_loading" type="button" disabled>
+                                    <button class="btn btn-info button_loading_binh_luan" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         <span class="visually-hidden">Loading...</span>
                                     </button>
@@ -286,6 +286,7 @@
 <!-- add bai dang -->
 <form th:action="@{/upload}" th:object="${baidang}" method="POST" enctype="multipart/form-data" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <input style="display: none" th:value="${info.getId()}" name="id">
+    <input style="display: none" th:value="'/home'" name="purpose">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -295,11 +296,15 @@
             <div class="modal-body">
                 <div>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label input_title">Title :</label>
-                        <input type="text" class="form-control" id="recipient-name" required th:field="*{tieuDe}" name="TieuDe">
+                        <label for="recipient-name" class="col-form-label">Title :</label>
+                        <input type="text" class="form-control input_title" id="recipient-name" required th:field="*{tieuDe}" name="TieuDe">
                     </div>
+                    <!--                        <div class="mb-3">-->
+                    <!--                          <label for="message-text" class="col-form-label">Nội dung :</label>-->
+                    <!--                          <textarea class="form-control" id="message-text" th:field="*{NoiDung}" name="NoiDung"></textarea>-->
+                    <!--                        </div>-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control input_noidung" required placeholder="Nội dung" id="floatingTextarea2" style="height: 100px" th:field="*{noiDung}" name="NoiDung"></textarea>
+                        <textarea class="form-control input_noi_dung" required placeholder="Nội dung" id="floatingTextarea2" style="height: 100px" th:field="*{noiDung}" name="NoiDung"></textarea>
                         <label for="floatingTextarea2">Content</label>
                     </div>
 
@@ -319,7 +324,7 @@
                         </div>
                         <div>
                             <div class="input-group mb-3 mt-3 add_tag">
-                                <input type="text" class="form-control input-add-tag" placeholder="Recipient's username" aria-label="Tag name" aria-describedby="button-addon2">
+                                <input type="text" class="form-control input-add-tag" placeholder="Name Tag" aria-label="Tag name" aria-describedby="button-addon2">
                                 <button class="btn btn-outline-info btn-add-tag" type="button" id="button-addon2">Add</button>
                             </div>
                         </div>
@@ -333,7 +338,7 @@
                         </div>
                         <div>
                             <i class="fa-solid fa-paperclip upload_icon" style="cursor: pointer;"></i>
-                            <input type="file" id="fileInput" style="display: none">
+                            <input type="file" id="fileInput" accept="image/*" style="display: none">
                             <span class="counter">0</span>
                         </div>
                     </div>
@@ -345,13 +350,14 @@
                     <button type="submit" class="btn btn-info tao_bai_viet" style="color:white">Tạo bài viết</button>
                     <button class="btn btn-info button_loading" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span style="color:white">Tạo bài viết</span>
+                        <span style="color:white">Đang tạo...</span>
                     </button>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
 </form>
+
 <!-- overplay image full screen -->
 <div class="overplay">
     <img src="">
@@ -367,7 +373,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script th:src="@{/js/base.js}"></script>
-    <script src="../static/js/modal_question.js"></script>
+    <script th:src="@{/js/modal_question.js}"></script>
     <script th:src="@{/js/chiTietCauHoi.js}"></script>
 <!--<script src="../static/js/base.js"> </script>-->
 <!--<script src="../static/js/chiTietCauHoi.js"></script>-->

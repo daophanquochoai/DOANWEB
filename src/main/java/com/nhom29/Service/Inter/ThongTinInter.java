@@ -15,4 +15,5 @@ public interface ThongTinInter {
     void updateMK(ThongTin thongTin);
     void luuThongTin( ThongTin thongTin);
     pageUsers_ThongTin layThongTinTheoPageVaQ(Integer page, String q);
+    Optional<ThongTin> layThongTinBySdt(String sdt);
 }

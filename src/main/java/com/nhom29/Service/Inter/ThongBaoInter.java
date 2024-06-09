@@ -10,4 +10,5 @@ public interface ThongBaoInter {
     void taoThongBaoTheoBaiDang( Long baiDangId, long nguoiCommentId);
     void docThongBaoTheoNguoi(Long nguoiId, Long BaiDangId);
     long thongBaoChuaXem( Long id);
+    void deleteById(Long Id);
 }

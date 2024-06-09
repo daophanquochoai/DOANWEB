@@ -6,6 +6,7 @@ import com.nhom29.DTO.*;
 import com.nhom29.Model.ERD.*;
 import com.nhom29.Redis.Inter.ReportInter;
 import com.nhom29.Redis.Inter.TagInter_Redis;
+import com.nhom29.Repository.ThongBao_ThongTinRepository;
 import com.nhom29.Service.Inter.*;
 import com.nhom29.Service.Oauth2.CurrentUser;
 import com.nhom29.Service.Oauth2.security.OAuth2UserDetailCustom;
@@ -44,6 +45,7 @@ public class HomeController {
     private final ThongBaoInter thongBaoInter;
     private final RedisTemplate redisTemplate;
     private final ReportInter reportInter;
+    private final ThongBao_ThongTinRepository thongBaoThongTinRepository;
 
 
     private final TagInter_Redis tagInterRedis;
@@ -68,23 +70,36 @@ public class HomeController {
     public String preLogin(@CurrentUser OAuth2UserDetailCustom oAuth2UserDetailCustom,
                            Authentication authentication
     ){
+
         if( oAuth2UserDetailCustom == null ){
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             if( redisTemplate.opsForValue().get( KEY + ":" + userDetails.getUsername()) == null){
+                System.out.println("============================");
+                System.out.println("DB");
+                System.out.println("============================");
                 Optional<ThongTin> thongTin = thongTinInter.layThongTinByUserName(userDetails.getUsername());
                 if ( thongTin.isEmpty()) return "redirect:/logout";
                 redisTemplate.opsForValue().set( KEY + ":" + userDetails.getUsername(),thongTin.get(), 4, TimeUnit.HOURS );
             }
             else{
+                System.out.println("============================");
+                System.out.println("REDIS");
+                System.out.println("============================");
                 redisTemplate.expire(KEY + ":" + userDetails.getUsername(), 4, TimeUnit.HOURS);
             }
         }else{
             if( redisTemplate.opsForValue().get( KEY + ":" + oAuth2UserDetailCustom.getId()) == null){
+                System.out.println("============================");
+                System.out.println("DB");
+                System.out.println("============================");
                 Optional<ThongTin> thongTin = thongTinInter.layThongTin(oAuth2UserDetailCustom.getId());
                 if ( thongTin.isEmpty()) return "redirect:/logout";
                 redisTemplate.opsForValue().set( KEY + ":" + oAuth2UserDetailCustom.getId(),thongTin.get(), 4, TimeUnit.HOURS );
             }
             else{
+                System.out.println("============================");
+                System.out.println("REDIS");
+                System.out.println("============================");
                 redisTemplate.expire(KEY + ":" + oAuth2UserDetailCustom.getId(), 4, TimeUnit.HOURS);
             }
         }
@@ -160,7 +175,7 @@ public class HomeController {
     }
     // view bi chan
     @PostMapping("/upload")
-    @Transactional
+//    @Transactional
     public String uploadFile(@ModelAttribute("baidang") BaiDangDTO baiDangDTO,
                              @RequestParam(value = "fileInput", required = false) MultipartFile[] files,
                              @RequestParam(value = "tags", required = false) List<String> tags,
@@ -170,8 +185,14 @@ public class HomeController {
             BaiDang b = new BaiDang();
             ThongTin temp = new ThongTin();
             if( redisTemplate.opsForValue().get(KEY + ":" + baiDangDTO.getId()) != null){
+                System.out.println("============================");
+                System.out.println("REDIS");
+                System.out.println("============================");
                 temp = (ThongTin) redisTemplate.opsForValue().get(KEY + ":" + baiDangDTO.getId());
             }else{
+                System.out.println("============================");
+                System.out.println("DB");
+                System.out.println("============================");
                 Optional<ThongTin> t =  thongTinInter.layThongTin(baiDangDTO.getId());
                 if( t.isEmpty()) return "error";
                 temp = t.get();
@@ -219,6 +240,11 @@ public class HomeController {
 
             // Lưu bài đăng vào cơ sở dữ liệu
              baiDangInter.saveBaiDang(b);
+            if( temp.getTaiKhoanThongTin() == null){
+                redisTemplate.opsForValue().set( KEY + ":" +  baiDangDTO.getId(),thongTinInter.layThongTin(baiDangDTO.getId()).get(), 4, TimeUnit.HOURS );
+            }else{
+                redisTemplate.opsForValue().set( KEY + ":" +  temp.getTaiKhoanThongTin().getTaiKhoan().getUsername(),thongTinInter.layThongTin(baiDangDTO.getId()).get(), 4, TimeUnit.HOURS );
+            }
         } catch (Exception ex) {
             log.warn("{}", ex.getMessage());
             return "error"; // Trả về trang lỗi nếu có lỗi xảy ra
@@ -319,7 +345,8 @@ public class HomeController {
                                     @PathVariable Long baiDangId,
                                     Authentication authentication,
                                     @RequestParam(value = "page", defaultValue = "3") Integer soluong,
-                                    @RequestParam(value = "sort", defaultValue = "macdinh") String sort
+                                    @RequestParam(value = "sort", defaultValue = "macdinh") String sort,
+                                    HttpServletRequest request
                                     ) throws JsonProcessingException {
         ThongTin thongTin = new ThongTin();
         if( oAuth2UserDetailCustom == null ){
@@ -341,10 +368,17 @@ public class HomeController {
         // deltai baidang
         BaiDang baiDang = new BaiDang();
         if( redisTemplate.opsForValue().get(KEY_BD + ":" + baiDangId) != null){
+            System.out.println("============================");
+            System.out.println("REDIS");
+            System.out.println("============================");
             baiDang = (BaiDang) redisTemplate.opsForValue().get(KEY_BD + ":" + baiDangId);
         }else{
+            System.out.println("============================");
+            System.out.println("DB");
+            System.out.println("============================");
             Optional<BaiDang> baiDang_pre = baiDangInter.layChiTietBaiDang(baiDangId);
             if( baiDang_pre.isEmpty()) return "redirect:/home/error=baidangId";
+            redisTemplate.opsForValue().set(KEY_BD + ":" + baiDang_pre.get().getId(), baiDang_pre.get(), 4, TimeUnit.HOURS);
             baiDang = baiDang_pre.get();
         }
         // user followed baidang
@@ -362,7 +396,6 @@ public class HomeController {
         model.addAttribute("baidang", new BaiDangDTO());
         // All properti tag
         model.addAttribute("tags", tagInterRedis.getAllTag());
-
         // information from application file
         Infomation infomation = new Infomation(valueApp.getURLImage(), valueApp.getShortCutIcon());
         model.addAttribute("image", infomation);
@@ -390,6 +423,7 @@ public class HomeController {
         String jsonString = objectMapper.writeValueAsString(baiDangIdsList);
         // Pass the jsonString to your Thymeleaf template
         model.addAttribute("baiDangJson", jsonString);
+        model.addAttribute("request", request);
         model.addAttribute("sort", sort);
         return "chiTietCauHoi";
     }
@@ -428,7 +462,15 @@ public class HomeController {
         if( baiDang.isEmpty()) return "redirect:/question/" + baidangId + "?error=baidang";
         bl.setBaidang(baiDang.get());
         BinhLuan b = binhLuanInter.luuBinhLuan(bl);
+        System.out.println("============================");
+        System.out.println(b.getBaidang().getBinhLuans().size());
+        System.out.println("============================");
         redisTemplate.opsForValue().set(KEY_BD + ":" + baidangId, b.getBaidang(), 4, TimeUnit.HOURS);
+        if(  thongTin.get().getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( KEY + ":" +   thongTin.get().getId(), thongTin.get(), 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( KEY + ":" +   thongTin.get().getTaiKhoanThongTin().getTaiKhoan().getUsername(), thongTin.get(), 4, TimeUnit.HOURS );
+        }
         return "redirect:/question/" + baidangId + "?page=" + soluong + "&sort=" + sort;
     }
     @GetMapping("/email")
@@ -462,8 +504,10 @@ public class HomeController {
     @GetMapping("/tag")
     public String pageTag(Model model,@CurrentUser OAuth2UserDetailCustom oAuth2UserDetailCustom,
                           Authentication authentication,
-                          @RequestParam(value = "sort", defaultValue = "popular") String sort,
-                          @RequestParam(value = "page", defaultValue = "0") Integer page
+                          @RequestParam(value = "sort", defaultValue = "macdinh") String sort,
+                          @RequestParam(value = "page", defaultValue = "1") Integer page,
+                          @RequestParam(value = "q", defaultValue = "") String q,
+                          HttpServletRequest request
 
     ) throws JsonProcessingException {
         //================================thong tin trang chu================================
@@ -501,8 +545,16 @@ public class HomeController {
         // Pass the jsonString to your Thymeleaf template
         model.addAttribute("baiDangJson", jsonString);
         //================= thong tin về tag =================================
-        model.addAttribute("tags", tagInterRedis.getAllTag());
-
+        if( !q.isEmpty() ) page = 1;
+//        model.addAttribute("tagList", tagInterRedis.getAllTag());
+        Page<Tag> pageTag = tagInter.phanTrangTag(page - 1, 8 , sort, q);
+        model.addAttribute("tagList", pageTag);
+        model.addAttribute("tag", new Tag());
+        Integer tongTrang = pageTag.getTotalPages();
+        Pagination pagination = new Pagination(tongTrang, page);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("request", request);
+        model.addAttribute("q", q);
         return "tag";
     }
 
@@ -552,13 +604,12 @@ public class HomeController {
         model.addAttribute("request", request);
         //=======================================thong tin nguoi can xem===============================================
         ThongTin thongTinXem = new ThongTin();
-        if( redisTemplate.opsForValue().get(KEY + ":" + id) != null ){
-            thongTinXem = (ThongTin) redisTemplate.opsForValue().get(KEY + ":" + id);
-        }
-        else{
+        if( thongTin.getId() != id){
             Optional<ThongTin> temp = thongTinInter.layThongTin(id);
             if( temp.isEmpty()) return "redirect:/logout";
             thongTinXem = temp.get();
+        }else{
+            thongTinXem = thongTin;
         }
         //infomation
         model.addAttribute("infoXem", thongTinXem);

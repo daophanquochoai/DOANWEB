@@ -61,6 +61,7 @@
                                 </span>
             </div>
             <ul class="notice_list">
+                <span style="color: white">Thông báo</span>
                 <th:block th:each=" n : ${notice}">
                     <a th:href="@{'question/' + ${n.getThongbao().getBaidang().getId()}}" >
                         <div class="notice_item" th:style="${n.getStatus() == true ? 'background-color:white;' : 'background-color:#d9d4d4;'}">
@@ -326,7 +327,7 @@
                                                                     :
                                                                     '?' + request.queryString + '&page=' + pagination.getTotal())
                                                                  :
-                                                                '?page=' + p}}" th:text="${pagination.getTotal()}"></a>
+                                                                '?page=' + pagination.getTotal()}}" th:text="${pagination.getTotal()}"></a>
                                                     </li>
                                                 </th:block>
                                                 <th:block th:if="${pagination.getCurrentPage() == pagination.getTotal() && pagination.getCurrentPage() != 1}">

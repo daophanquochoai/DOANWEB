@@ -15,7 +15,6 @@ public interface BaiDangInter {
     Optional<BaiDang> layChiTietBaiDang( Long id);
     pageQuestion_BaiDang timBaiDangPhanTrangVaLoc(int offset, int pageSize, String sort, String filter, String[] tagUsed, String q);
     Integer tongBaiDang();
-    @Transactional
     void deleteQuestion( Long baidang );
     pageQuestion_BaiDang layBaiDangTheoDoi( Long thongtinId, Integer soluong, String q);
 

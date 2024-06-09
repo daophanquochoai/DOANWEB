@@ -104,6 +104,8 @@ const noticeNumber = document.querySelector(".header_info .notice_number");
 const receiverMessage = (payload) =>{
     var message = JSON.parse(payload.body);
     if( arrayFollowData != null ){
+        console.log(arrayFollowData);
+        console.log(message.nguoiCommentId != infoId.textContent);
         if( arrayFollowData.includes(message.baiDangId) && message.nguoiCommentId != infoId.textContent ){
             noticeNumber.textContent = +noticeNumber.textContent + 1;
             const a = document.createElement("a");
@@ -125,7 +127,7 @@ const receiverMessage = (payload) =>{
                 noticeList.appendChild(a);
             }
         }
-        if( infoId.textContent == message.nguoiDangId ){
+        if( infoId.textContent == message.nguoiDangId && message.nguoiDangId != message.nguoiCommentId){
             noticeNumber.textContent = +noticeNumber.textContent + 1;
             const a = document.createElement("a");
             const div = document.createElement("div");

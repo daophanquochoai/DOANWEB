@@ -20,9 +20,6 @@ public class BinhLuanImpl implements BinhLuanInter {
     @Override
     public Page<BinhLuan> layBinhLuanTheoBaiDangVaPhanTrang(Long id, Integer soluong, String sort) {
         List<BinhLuan> danhSachBinhLuan;
-        System.out.println("===========================");
-        log.info("{}", sort);
-        System.out.println("===========================");
         if( sort.equals("thoigian")){
             danhSachBinhLuan = binhLuanRepo.layBinhLuanTheoBaiDangSortThoiGian(id);
         }else{
@@ -46,5 +43,10 @@ public class BinhLuanImpl implements BinhLuanInter {
     @Override
     public BinhLuan luuBinhLuan(BinhLuan binhLuan) {
         return binhLuanRepo.save(binhLuan);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        binhLuanRepo.deleteById(id);
     }
 }

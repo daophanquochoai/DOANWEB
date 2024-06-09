@@ -36,7 +36,7 @@ public class BaiDang implements Serializable {
     @JoinColumn(name = "BaiDang_ID")
     private Set<HinhAnh> hinhAnh = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "BaiDang_Tag",
             joinColumns = @JoinColumn(name = "BaiDang_ID"),
@@ -52,7 +52,7 @@ public class BaiDang implements Serializable {
     )
     private List<ThongTin> luu = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.DETACH)
     @JoinTable(
             name = "BaiDang_User_Like",
             joinColumns = @JoinColumn(name = "BaiDang_ID"),
@@ -60,11 +60,13 @@ public class BaiDang implements Serializable {
     )
     private List<ThongTin> like = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "baidang", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "baidang", cascade = CascadeType.DETACH, orphanRemoval = true)
     private List<BinhLuan> binhLuans = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "NguoiDang")
     private ThongTin thongTin;
+    @OneToMany( fetch = FetchType.EAGER, mappedBy = "baidang", orphanRemoval = true)
+    private List<ThongBao> thongBaoList = new ArrayList<>();
 }
 

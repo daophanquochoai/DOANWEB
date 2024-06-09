@@ -3,9 +3,11 @@ package com.nhom29.Cotnroller;
 import com.nhom29.Configuration.Security;
 import com.nhom29.DTO.ConvertThongTinDangKi;
 import com.nhom29.DTO.ThongTinDangKi;
+import com.nhom29.Model.ERD.Tag;
 import com.nhom29.Model.ERD.TaiKhoan;
 import com.nhom29.Model.ERD.TaiKhoan_ThongTin;
 import com.nhom29.Model.ERD.ThongTin;
+import com.nhom29.Redis.Inter.TagInter_Redis;
 import com.nhom29.Service.Inter.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,8 @@ public class XuLiController {
     private final BaiDangInter baiDangInter;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
+    private final TagInter tagInter;
+    private final TagInter_Redis tagInterRedis;
 
     // string random identify
     private final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -176,10 +180,13 @@ public class XuLiController {
         }else{
             return "redirect:/taotaikhoan?error=email&key=" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan();
         }
-        try{
-            thongTinInter.layThongTInByEmail(thongTinDangKi.getEmail());
-        }catch (RuntimeException ex){
+
+        if( thongTinInter.layThongTInByEmail(thongTinDangKi.getEmail()).isPresent() ){
             return "redirect:/taotaikhoan?error=email&key=" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan();
+        }
+
+        if( thongTinInter.layThongTinBySdt(thongTinDangKi.getSodienthoai()).isPresent()){
+            return "redirect:/taotaikhoan?error=sdt&key=" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan();
         }
         if( thongTinDangKi.getTruonghoc()!=null){
             thongTin.setTruong(thongTinDangKi.getTruonghoc());
@@ -242,6 +249,7 @@ public class XuLiController {
         }
     }
     @GetMapping("/like/{baidangId}/{thongtinId}/{option}")
+    @Transactional
     public String like(
             @PathVariable("baidangId") Long baidangId,
             @PathVariable("thongtinId") Long thongtinId,
@@ -259,13 +267,14 @@ public class XuLiController {
         }
     }
     @PostMapping("/user/{userId}")
+    @Transactional
     public String editUser(@PathVariable Long userId,
                            @ModelAttribute("infoXem") ThongTin thongTin,
                            @RequestParam(value = "avt", required = false) MultipartFile file
     ) throws IOException {
         ThongTin thongTinGoc = new ThongTin();
-        if( redisTemplate.opsForValue().get(KEY + ":" + userId) != null){
-            thongTinGoc = (ThongTin) redisTemplate.opsForValue().get(KEY + ":" + userId);
+        if( redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId) != null){
+            thongTinGoc = (ThongTin) redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId);
         }else{
             ThongTin thongTinTemp = new ThongTin();
             Optional<ThongTin> temp = thongTinInter.layThongTin(userId);
@@ -274,12 +283,17 @@ public class XuLiController {
             thongTinGoc = thongTinTemp;
         }
         ThongTin thongTin1 = thongTinInter.updateThongTin(thongTinGoc, file, thongTin);
-//        redisTemplate.opsForValue().set(KEY + ":" + userId, thongTin1, 4, TimeUnit.HOURS);
+        if(  thongTin1.getTaiKhoanThongTin() == null){
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +  thongTin1.getId(), thongTin1, 4, TimeUnit.HOURS );
+        }else{
+            redisTemplate.opsForValue().set( HomeController.KEY + ":" +   thongTin1.getTaiKhoanThongTin().getTaiKhoan().getUsername(), thongTin1, 4, TimeUnit.HOURS );
+        }
         return "redirect:/user/" + userId;
     }
 
     // filter question page
     @PostMapping("/question/filter")
+    @Transactional
     public String filterPageQuestion(
             @RequestParam(value = "filter") String filter,
             @RequestParam(value = "sort") String sort,
@@ -325,6 +339,7 @@ public class XuLiController {
 
     // delete question
     @PostMapping("/delete/question/{baidang}")
+    @Transactional
     public String deleteQuestion( @PathVariable Long baidang,
                                   @RequestParam(value = "purpose", defaultValue = "") String purpose
     ){
@@ -333,6 +348,26 @@ public class XuLiController {
             return "redirect:" + purpose;
         }catch (Exception ex){
             return "error";
+        }
+    }
+    @PostMapping("/tag/save")
+    @Transactional
+    public String creatTag(
+            @ModelAttribute("tag") Tag tag
+    ){
+        try {
+            System.out.println(tag.getTenTag());
+            System.out.println(tag.getNoidung());
+
+            List<Tag> tagList = tagInter.getAllTag();
+            tagInter.saveTagALl(tag, tagList);
+            if( redisTemplate.opsForValue().get("TAG") == null ){
+                tagInterRedis.updateTag();
+            }
+            return "redirect:/tag";
+        }catch (Exception ex)
+        {
+            return "redirect:/error";
         }
     }
 }

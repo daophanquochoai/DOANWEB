@@ -20,6 +20,8 @@ public interface ThongTinRepository extends JpaRepository<ThongTin, Long> {
     Page<ThongTin> findAllUserWithQ(String q, PageRequest pageRequest);
     @Query("select count(b) from ThongTin b")
     Long getNumber();
+    @Query("select t from ThongTin t where t.Sdt = :sdt")
+    Optional<ThongTin> findBySdt(String sdt);
 }
 
 
