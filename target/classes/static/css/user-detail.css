@@ -122,17 +122,17 @@
 }
 
 .section_body_top .box_info .modal-header{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     position: relative;
+    display: block;
+    width: 100%;
 }
 
 .section_body_top .box_info .inner-title
 {
     /* margin: 10px 0; */
     font-weight: 700;
+    position: relative;
+    top: 20%;
 }
 
 .section_body_top .box_info .modal-content{
@@ -140,23 +140,24 @@
     margin-bottom: 30px;
 }
 
-.section_body_top .box_info .modal-header{
-    position: relative;
-}
-
 .section_body_top .box_info .modal-header .btn-close{
     position: absolute;
-    top: 0px;
-    right: 0px;
-    background: #000000;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    opacity: 0.9;
-    color: white;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+    color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: ease-in 0.3s;
+}
+
+.section_body_top .box_info .modal-header .btn-close:hover{
+    background: #ddd;
+    color: #111;
 }
 
 .section_body_top .box_info .modal-body .form-group {
@@ -183,13 +184,60 @@
     color: white;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
 }
 
-/* preloading delete post */
-.button_delete_loading{
-    display: none;
+/* ----image-preview--- */
+[preview-image]{
+    position: relative;
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    padding: 5px;
+    overflow: hidden;
+    border: 1px solid #eee;
 }
+
+[image-see]{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+
+
+}
+
+[preview-image] img{
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+[icon-upload-avater]{
+    /* color: #70b4fd; */
+    color: #fff;
+    font-size: 20px;
+    position: absolute;
+    top: 55%;
+    left: -22px;
+    cursor: pointer;
+    width: 150px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    background: #b8d7f8;
+    opacity: 0;
+    transition: ease-in 0.3s;
+    padding: 0 10px;
+}
+
+[icon-upload-avater]:hover{
+    opacity: 1;
+}
+
+
+
+
+
+
 
 
 

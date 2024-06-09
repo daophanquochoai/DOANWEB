@@ -129,14 +129,29 @@
                                  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Update profit</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                                X
-                                            </button>
-                                        </div>
                                         <div class="modal-body form-edit">
                                             <form th:action="@{'/xuli/user/' + ${info.id}}" method="POST" th:object="${infoXem}" enctype="multipart/form-data">
+                                                <div class="modal-header">
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <div class="form-group" >
+                                                                <div preview-image>
+                                                                    <!-- <label for="AnhDaiDien">Ảnh đại diện</label> -->
+                                                                    <input name="avt" type="file" class="form-control-file d-none" id="AnhDaiDien" required accept="image/*" image-input>
+                                                                    <img  src="https://cdn.photoroom.com/v1/assets-cached.jpg?path=backgrounds_v3/white/Photoroom_white_background_extremely_fine_texture_only_white_co_d4046f3b-0a21-404a-891e-3f8d37c5aa94.jpg" alt="" image-see>
+                                                                    <i class="fa-solid fa-arrow-up-from-bracket" icon-upload-avater></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-7">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">Update profit</h5>
+                                                        </div>
+
+                                                    </div>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                                        X
+                                                    </button>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="Ho">Họ</label>
                                                     <input type="text" class="form-control" th:field="*{ho}" id="Ho" name="Ho" required>
@@ -162,10 +177,6 @@
                                                 <div class="form-group">
                                                     <label for="GioiThieu">Giới thiệu</label>
                                                     <input type="text" class="form-control" th:field="*{gioiThieu}" id="GioiThieu" name="GioiThieu">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="AnhDaiDien">Ảnh đại diện</label>
-                                                    <input type="file" class="form-control-file" id="AnhDaiDien" name="avt" accept="image/*">
                                                 </div>
                                                 <button type="submit" class="btn btn-primary col-xl-12 text-center">
                                                     Update

@@ -272,6 +272,8 @@ public class XuLiController {
                            @ModelAttribute("infoXem") ThongTin thongTin,
                            @RequestParam(value = "avt", required = false) MultipartFile file
     ) throws IOException {
+        System.out.println("=========================");
+        System.out.println("=========================");
         ThongTin thongTinGoc = new ThongTin();
         if( redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId) != null){
             thongTinGoc = (ThongTin) redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId);
