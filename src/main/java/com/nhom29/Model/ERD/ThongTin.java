@@ -1,11 +1,14 @@
 package com.nhom29.Model.ERD;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,18 +23,24 @@ public class ThongTin implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(columnDefinition = "varchar(255)", unique = true)
+    @Pattern(regexp = "^[\\w+-.]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,7}$", message = "Email chưa đúng định dạng")
     private String Email;
     @Column(columnDefinition = "nvarchar(100)")
+    @Length(min = 5, message = "Họ dài hơn 5 kí tự")
     private String Ho;
     @Column(columnDefinition = "nvarchar(100)", nullable = false)
+    @Length(min = 5, message = "Tên dài hơn 5 kí tự")
     private String Ten;
     @Column(columnDefinition = "nvarchar(255)")
     private String Truong;
     @Column(columnDefinition = "varchar(10)", unique = true)
+    @Length(max = 10, min = 10, message = "SDT có 10 kí tự")
     private String Sdt;
     @Column(name = "AnhDaiDien", columnDefinition = "TEXT")
+    @NotNull(message = "Ảnh đại diện không thể để trống")
     private String anhDaiDien;
     @Column(columnDefinition = "nvarchar(500)", nullable = true)
+    @NotNull(message = "Giới thiệu không thể để trống")
     private String GioiThieu;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "TaiKhoan_ThongTin")

@@ -2,6 +2,7 @@ package com.nhom29.Cotnroller;
 
 import com.nhom29.Configuration.Security;
 import com.nhom29.DTO.ConvertThongTinDangKi;
+import com.nhom29.DTO.Infomation;
 import com.nhom29.DTO.ThongTinDangKi;
 import com.nhom29.Model.ERD.Tag;
 import com.nhom29.Model.ERD.TaiKhoan;
@@ -10,28 +11,32 @@ import com.nhom29.Model.ERD.ThongTin;
 import com.nhom29.Redis.Inter.TagInter_Redis;
 import com.nhom29.Service.Inter.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/xuli")
 @RequiredArgsConstructor
 @Slf4j
 public class XuLiController {
+    private final ValueApp valueApp;
     private final MailInter mailInter;
     private final Security security;
     private final ThongTinInter thongTinInter;
@@ -144,9 +149,17 @@ public class XuLiController {
     @PostMapping("/taotaikhoan")
     @Transactional
     public String taoTaiKhoan(
-            @ModelAttribute("thongtin") ThongTinDangKi thongTinDangKi,
+            @Valid @ModelAttribute("thongtin") ThongTinDangKi thongTinDangKi,
+            BindingResult bindingResult,
             Model model
             ) throws InterruptedException {
+
+        if( bindingResult.hasErrors() ){
+            Infomation infomation = new Infomation(valueApp.URLImage, valueApp.shortCutIcon);
+            model.addAttribute("image", infomation);
+            return "taoTaiKhoan";
+        }
+
         if( thongTinDangKi.getEmail().isEmpty()) return "redirect:/taotaikhoan?error=email";
         if( thongTinDangKi.getTaikhoan().isEmpty()) return "redirect:/taotaikhoan?error=username";
         if( redisTemplate.opsForHash().get("thongtindangki", thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan()) == null){
@@ -269,11 +282,16 @@ public class XuLiController {
     @PostMapping("/user/{userId}")
     @Transactional
     public String editUser(@PathVariable Long userId,
-                           @ModelAttribute("infoXem") ThongTin thongTin,
+                           @Valid @ModelAttribute("infoXem") ThongTin thongTin,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
                            @RequestParam(value = "avt", required = false) MultipartFile file
     ) throws IOException {
-        System.out.println("=========================");
-        System.out.println("=========================");
+        if( bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("error", "Vui lòng nhập đúng định dạng!!");
+            return "redirect:/user/" + userId;
+        }
+        System.out.println("success");
         ThongTin thongTinGoc = new ThongTin();
         if( redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId) != null){
             thongTinGoc = (ThongTin) redisTemplate.opsForValue().get(HomeController.KEY + ":" + userId);

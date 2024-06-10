@@ -18,8 +18,8 @@
     <link rel="stylesheet" th:href="@{/css/user-detail.css}">
     <link rel="shortcut icon" type="image/png" th:href="${image.getShortCutIcon()}" />
 </head>
-
 <body>
+
     <header
             class="d-flex align-items-center justify-content-between w-100"
     >
@@ -89,7 +89,12 @@
                 </div>
             </nav>
         </nav>
-        <div class="section_body_main d-flex">
+        <div class="section_body_main d-flex flex-column">
+            <div th:if="${error}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong th:text="${error}"></strong>
+                </div>
+            </div>
             <div class="section_body_left">
                 <div class="section_body_top">
                     <div class="box_info">
@@ -154,29 +159,29 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Ho">Họ</label>
-                                                    <input type="text" class="form-control" th:field="*{ho}" id="Ho" name="Ho" required>
+                                                    <input minlength="5" type="text" class="form-control" th:field="*{ho}" id="Ho" name="Ho" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Ten">Tên</label>
-                                                    <input type="text" class="form-control" th:field="*{ten}" id="Ten" name="Ten" required>
+                                                    <input minlength="5" type="text" class="form-control" th:field="*{ten}" id="Ten" name="Ten" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Truong">Trường</label>
-                                                    <input type="text" class="form-control" th:field="*{truong}" id="Truong" name="Truong">
+                                                    <input minlength="5" type="text" class="form-control" th:field="*{truong}" id="Truong" name="Truong">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="Sdt">Số điện thoại</label>
-                                                    <input type="text" class="form-control" th:field="*{sdt}" id="Sdt" name="Sdt">
+                                                    <input minlength="10" maxlength="10" type="text" class="form-control" th:field="*{sdt}" id="Sdt" name="Sdt">
                                                 </div>
                                                 <th:block th:if="${info.providerId == 'local'}">
                                                     <div class="form-group">
                                                         <label for="email">Email</label>
-                                                        <input type="email" class="form-control" th:field="*{email}" id="email" name="email">
+                                                        <input minlength="10" type="email" class="form-control" th:field="*{email}" id="email" name="email">
                                                     </div>
                                                 </th:block>
                                                 <div class="form-group">
                                                     <label for="GioiThieu">Giới thiệu</label>
-                                                    <input type="text" class="form-control" th:field="*{gioiThieu}" id="GioiThieu" name="GioiThieu">
+                                                    <textarea minlength="10" class="form-control" th:field="*{gioiThieu}" id="GioiThieu" name="GioiThieu"></textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary col-xl-12 text-center">
                                                     Update
@@ -282,13 +287,8 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- <div class="section_body_pagenation">
-                    <div class="pagination"></div>
-                </div> -->
+                    </div>
                 </div>
-                <div class="section_body_right"></div>
             </div>
     </section>
 
