@@ -137,8 +137,8 @@
                                                             <div class="form-group" >
                                                                 <div preview-image>
                                                                     <!-- <label for="AnhDaiDien">Ảnh đại diện</label> -->
-                                                                    <input name="avt" type="file" class="form-control-file d-none" id="AnhDaiDien" required accept="image/*" image-input>
-                                                                    <img  src="https://cdn.photoroom.com/v1/assets-cached.jpg?path=backgrounds_v3/white/Photoroom_white_background_extremely_fine_texture_only_white_co_d4046f3b-0a21-404a-891e-3f8d37c5aa94.jpg" alt="" image-see>
+                                                                    <input th:value="${infoXem.anhDaiDien}" name="avt" type="file" class="form-control-file d-none" id="AnhDaiDien" accept="image/*" image-input>
+                                                                    <img  th:src="${infoXem.anhDaiDien}" alt="" image-see>
                                                                     <i class="fa-solid fa-arrow-up-from-bracket" icon-upload-avater></i>
                                                                 </div>
                                                             </div>
