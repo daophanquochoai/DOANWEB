@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @Slf4j
@@ -35,10 +34,6 @@ public class NoticeController {
         if( baiDang.isEmpty() || thongTin.isEmpty() ) throw  new RuntimeException("noticeMessage");
         thongBaoInter.taoThongBaoTheoBaiDang(noticeMessage.getBaidang(), noticeMessage.getNguoicomment());
         baiDang = baiDangInter.layChiTietBaiDang( noticeMessage.getBaidang());
-        System.out.println("======================================================");
-        System.out.println(baiDang.get().getThongBaoList().size());
-        System.out.println("======================================================");
-        redisTemplate.opsForValue().set(HomeController.KEY_BD + ":" + baiDang.get().getId(), baiDang.get(), 4, TimeUnit.HOURS);
         return new NoticeMessageReceive(baiDang.get().getId(), baiDang.get().getThongTin().getId(), thongTin.get().getTen(), noticeMessage.getNguoicomment(),  LocalDateTime.now());
     }
 }

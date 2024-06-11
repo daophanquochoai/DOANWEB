@@ -82,10 +82,10 @@
             <p><a th:href="@{/tag}">Tag</a></p>
         </div>
         <div class="navbar_items no_action">
-            <p><a th:href="@{/Saved}">Saved</a></p>
+            <p><a th:href="@{/saved}">Saved</a></p>
         </div>
         <div class="navbar_items no_action">
-            <p><a th:href="@{/Users}">Users</a></p>
+            <p><a th:href="@{/users}">Users</a></p>
         </div>
     </nav>
     <div class="section_body_main d-flex">
@@ -163,7 +163,7 @@
                                             <div class="tag-text">
                                                 <div class="tag-question-quantity">
                                                     <i class="fa-solid fa-fire"></i>
-                                                    <div th:text="${tag.baiDang.size() + ' questions'}">
+                                                    <div th:text="${item.baiDang.size() + ' questions'}">
 
                                                     </div>
                                                 </div>
@@ -172,7 +172,7 @@
                                                 </p>
                                             </div>
                                             <div class="tag-button">
-                                                <button>Watch Tag</button>
+                                                <button th:onclick="'window.location.href = \'' + @{/question(tagUsed=${item.tenTag})} + '\''">Watch Tag</button>
                                             </div>
                                         </div>
                                     </h5>
@@ -180,7 +180,7 @@
 
                                     </p>
                                     <div class="card-bottom d-flex jc-space-between text-wrap">
-                                        <p th:text="${tag.baiDang.size() + ' questions'}"></p>
+                                        <p th:text="${item.baiDang.size() + ' questions'}"></p>
                                         <p class="tag-create-time" th:text="${'Created at: ' + item.getThoigiantao()}"></p>
                                     </div>
                                 </div>

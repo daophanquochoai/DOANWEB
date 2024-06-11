@@ -51,7 +51,6 @@ else
 {
     sortDefault.classList.add("active");
 }
-
 const handleKeyPressTag = (event, value) =>{
     if (event.keyCode === 13) {
         let arr = window.location.search.split(/[&?]/);
@@ -59,10 +58,14 @@ const handleKeyPressTag = (event, value) =>{
         if( arr.length > 1){
             let check = false;
             for( let i = 1 ; i < arr.length ; i++ ){
+                console.log(arr[i])
                 if( arr[i].startsWith("q=")){
                     check = true;
                     url += ("q=" + value);
-                }else {
+                }else if(  arr[i].startsWith("page=") ){
+                    url += ("page=1");
+                }
+                else {
                     url += arr[i];
                 }
                 if( i != arr.length -1){
@@ -73,6 +76,16 @@ const handleKeyPressTag = (event, value) =>{
         }else{
             url += ("q=" + value);
         }
+
         window.location.href = url;
+    }
+}
+
+let arr = window.location.search.split(/[&?]/);
+if( arr.length > 1) {
+    let check = false;
+    for (let i = 1; i < arr.length; i++) {
+        console.log(arr[i])
+
     }
 }

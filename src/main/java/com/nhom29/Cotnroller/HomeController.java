@@ -368,10 +368,13 @@ public class HomeController {
         // deltai baidang
         BaiDang baiDang = new BaiDang();
         if( redisTemplate.opsForValue().get(KEY_BD + ":" + baiDangId) != null){
-            System.out.println("============================");
+            System.out.println("=============view===============");
             System.out.println("REDIS");
             System.out.println("============================");
             baiDang = (BaiDang) redisTemplate.opsForValue().get(KEY_BD + ":" + baiDangId);
+            System.out.println("============================");
+            System.out.println(baiDang.getBinhLuans().size());
+            System.out.println("============================");
         }else{
             System.out.println("============================");
             System.out.println("DB");
@@ -462,10 +465,11 @@ public class HomeController {
         if( baiDang.isEmpty()) return "redirect:/question/" + baidangId + "?error=baidang";
         bl.setBaidang(baiDang.get());
         BinhLuan b = binhLuanInter.luuBinhLuan(bl);
+        redisTemplate.opsForValue().set(KEY_BD + ":" + baidangId,  baiDangInter.layChiTietBaiDang(baidangId).get(), 4, TimeUnit.HOURS);
+        BaiDang bd = (BaiDang) redisTemplate.opsForValue().get(KEY_BD + ":" + baidangId);
+        System.out.println("=============upload===============");
+        System.out.println(bd.getBinhLuans().toArray().length);
         System.out.println("============================");
-        System.out.println(b.getBaidang().getBinhLuans().size());
-        System.out.println("============================");
-        redisTemplate.opsForValue().set(KEY_BD + ":" + baidangId, b.getBaidang(), 4, TimeUnit.HOURS);
         if(  thongTin.get().getTaiKhoanThongTin() == null){
             redisTemplate.opsForValue().set( KEY + ":" +   thongTin.get().getId(), thongTin.get(), 4, TimeUnit.HOURS );
         }else{
@@ -545,13 +549,14 @@ public class HomeController {
         // Pass the jsonString to your Thymeleaf template
         model.addAttribute("baiDangJson", jsonString);
         //================= thong tin về tag =================================
-        if( !q.isEmpty() ) page = 1;
 //        model.addAttribute("tagList", tagInterRedis.getAllTag());
         Page<Tag> pageTag = tagInter.phanTrangTag(page - 1, 8 , sort, q);
         model.addAttribute("tagList", pageTag);
         model.addAttribute("tag", new Tag());
         Integer tongTrang = pageTag.getTotalPages();
         Pagination pagination = new Pagination(tongTrang, page);
+        System.out.println(tongTrang);
+        System.out.println(page);
         model.addAttribute("pagination", pagination);
         model.addAttribute("request", request);
         model.addAttribute("q", q);
