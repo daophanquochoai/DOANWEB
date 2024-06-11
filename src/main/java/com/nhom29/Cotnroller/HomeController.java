@@ -484,7 +484,7 @@ public class HomeController {
                                   Model model,
                                   @RequestParam(value = "", defaultValue = "") String key
     ){
-        ConvertThongTinDangKi c = (ConvertThongTinDangKi) redisTemplate.opsForHash().get("thongtindangki", key);
+        ConvertThongTinDangKi c = (ConvertThongTinDangKi) redisTemplate.opsForValue().get("thongtindangki::" + key);
         ThongTinDangKi thongtin = new ThongTinDangKi();
         if( c != null ){
             thongtin.setHovaten(c.getHovaten());

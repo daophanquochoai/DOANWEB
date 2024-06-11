@@ -49,7 +49,6 @@ public class XuLiController {
     private final RedisTemplate redisTemplate;
     private final TagInter tagInter;
     private final TagInter_Redis tagInterRedis;
-
     // string random identify
     private final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
     // create regex check email
@@ -84,6 +83,7 @@ public class XuLiController {
     }
 
     @PostMapping("/maxacnhan/{id}")
+    @Transactional
     public String xacNhanIdentify(@RequestParam("maxacnhan") List<String> maxacnhan,
                                   @PathVariable("id") Long id, Model model){
         String a = new String();
@@ -162,7 +162,7 @@ public class XuLiController {
 
         if( thongTinDangKi.getEmail().isEmpty()) return "redirect:/taotaikhoan?error=email";
         if( thongTinDangKi.getTaikhoan().isEmpty()) return "redirect:/taotaikhoan?error=username";
-        if( redisTemplate.opsForHash().get("thongtindangki", thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan()) == null){
+        if( redisTemplate.opsForValue().get("thongtindangki::" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan()) == null){
             ConvertThongTinDangKi convert = new ConvertThongTinDangKi(thongTinDangKi.getHovaten(),
                     thongTinDangKi.getSodienthoai(),
                     thongTinDangKi.getEmail(),
@@ -170,7 +170,7 @@ public class XuLiController {
                     thongTinDangKi.getGioithieuveminh(),
                     thongTinDangKi.getTaikhoan(),
                     thongTinDangKi.getMatkhau());
-            redisTemplate.opsForHash().put("thongtindangki", thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan(),convert);
+            redisTemplate.opsForValue().set("thongtindangki::" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan(),convert, 1, TimeUnit.HOURS);
         }
 
         ThongTin thongTin = new ThongTin();
@@ -236,7 +236,7 @@ public class XuLiController {
             }
         }
         thongTinInter.luuThongTin(thongTin);
-        redisTemplate.opsForHash().delete(thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan());
+        redisTemplate.delete("thongtindangki::" + thongTinDangKi.getEmail() + thongTinDangKi.getTaikhoan());
         return "redirect:/login";
     }
     @GetMapping("/follow/{baidangId}/{thongtinId}/{option}")

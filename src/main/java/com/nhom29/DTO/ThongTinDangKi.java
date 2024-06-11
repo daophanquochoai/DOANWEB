@@ -14,8 +14,7 @@ public class ThongTinDangKi {
     private MultipartFile avatar;
     @Length( min = 5, message = " * Họ và tên quá ngắn")
     private String hovaten;
-    @Length( min = 10, max = 10, message = " * Số điện thoại đúng 10 số")
-    @Pattern(regexp = "^(?:\\+?84|0)(?:\\d{9,10})$\n", message = "Số điện thoại chưa đúng định dạng")
+    @Pattern(regexp = "^(?:\\+?84|0)(?:\\d{9,10})$", message = "Số điện thoại chưa đúng định dạng")
     private String sodienthoai;
     @Pattern(regexp = "^[\\w+-.]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,7}$", message = " * Email chưa đúng định dạng")
     private String email;

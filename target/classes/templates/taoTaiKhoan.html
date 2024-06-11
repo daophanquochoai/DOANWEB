@@ -27,9 +27,9 @@
 
     <section class="container-fuild d-flex justify-content-center align-items-center w-100 box" >
         <form th:action="@{/xuli/taotaikhoan}" th:object="${thongtin}" method="POST" class="box-form d-flex flex-column justify-content-center" enctype="multipart/form-data">
-            <span th:if="${param.error != null  ? param.error[0] == 'sdt' : false}" style="color: red; font-weight: 700; font-size: 12px">
-                *Tên chưa hợp lệ
-            </span>
+<!--            <span th:if="${param.error != null  ? param.error[0] == 'sdt' : false}" style="color: red; font-weight: 700; font-size: 12px">-->
+<!--                *Tên chưa hợp lệ-->
+<!--            </span>-->
             <div class="form-floating mb-3" style="border: none;">
                 <input type="text" class="form-control" id="hovaten" placeholder="" name="hovaten" th:field="*{hovaten}" required>
                 <span th:if="${#fields.hasErrors('hovaten')}"
@@ -37,9 +37,9 @@
                       class="error"> </span>
                 <label for="hovaten">Họ và tên</label>
             </div>
-<!--            <span th:if="${param.error != null  ? param.error[0] == 'sdt' : false}" style="color: red; font-weight: 700; font-size: 12px">-->
-<!--                *Số điện thoại chưa hợp lệ-->
-<!--            </span>-->
+            <span th:if="${param.error != null  ? param.error[0] == 'sdt' : false}" style="color: red; font-weight: 700; font-size: 12px">
+                *Số điện thoại có thể trùng hoặc chưa đúng định dạng
+            </span>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="sdt" placeholder="" name="sodienthoai" th:field="*{sodienthoai}" required>
                 <span th:if="${#fields.hasErrors('sodienthoai')}"
@@ -47,9 +47,9 @@
                       class="error"> </span>
                 <label for="sdt">Số điện thoại</label>
             </div>
-<!--            <span th:if="${param.error != null  ? param.error[0] == 'email' : false}" style="color: red; font-weight: 700; font-size: 12px">-->
-<!--                *Email chưa hợp lệ hoặc đã bị trùng-->
-<!--            </span>-->
+            <span th:if="${param.error != null  ? param.error[0] == 'email' : false}" style="color: red; font-weight: 700; font-size: 12px">
+                *Email chưa hợp lệ hoặc đã bị trùng
+            </span>
             <br>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="email" placeholder="" name="email" th:field="*{email}" required>
