@@ -1,9 +1,6 @@
 <h1>Đồ án môn lập trình web</h1>
-<span>Thành viên nhóm :</span>
 <ul>
 <li>Đào Phan Quốc Hoài</li>
-<li>Lê Đức Thái</li>
-<li>Nguyễn Thanh Tùng</li>
 </ul>
 
 <hr>
